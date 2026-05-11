@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Service Provider Dashboard</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.booking-card {
+  background: var(--s3); border: 1px solid var(--b1); border-radius: 3px;
+  padding: 14px 16px; margin-bottom: 10px; cursor: pointer; transition: border-color .15s;
+}
+.booking-card:hover { border-color: var(--primary); }
+.bc-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.bc-svc { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; }
+.bc-vessel { font-size: 13px; font-weight: 600; color: var(--t1); flex: 1; }
+.bc-detail { font-size: 11px; color: var(--t2); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px; }
+.bc-footer { display: flex; align-items: center; justify-content: space-between; }
+.res-availability { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--b1); }
+.res-availability:last-child { border-bottom: none; }
+.ra-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.ra-name { font-size: 12px; font-weight: 500; color: var(--t1); flex: 1; }
+.ra-type { font-size: 10px; color: var(--t2); font-family: 'JetBrains Mono', monospace; }
+.upcoming-item { padding: 8px 0; border-bottom: 1px solid var(--b1); display: flex; gap: 10px; }
+.upcoming-item:last-child { border-bottom: none; }
+.up-time { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--t1); min-width: 50px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">Service Provider Dashboard</div>
+        <div class="pg-sub">ATLANTIC PILOT SERVICES — MY ASSIGNMENTS AND RESOURCES</div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--blue)"></div>
+          <div class="kpi-label">Active Bookings</div>
+          <div class="kpi-value">5</div>
+          <div class="kpi-sub">ASSIGNED TO MY ORG</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--orange)"></div>
+          <div class="kpi-label">Today's Services</div>
+          <div class="kpi-value">3</div>
+          <div class="kpi-sub">SCHEDULED FOR TODAY</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--teal)"></div>
+          <div class="kpi-label">Resources In Use</div>
+          <div class="kpi-value">4<span style="font-size:16px;font-weight:400;color:var(--t2)">/8</span></div>
+          <div class="kpi-sub">OF TOTAL POOL</div>
+          <div class="prog-bar"><div class="prog-fill" style="width:50%;background:var(--teal)"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--green)"></div>
+          <div class="kpi-label">Completed This Week</div>
+          <div class="kpi-value">12</div>
+          <div class="kpi-sub">SERVICES COMPLETED</div>
+        </div>
+      </div>
+
+      <div class="panels-60-40">
+        <!-- Assigned Bookings -->
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--t1)">Assigned Bookings</div>
+            <select class="t-select" style="font-size:11px">
+              <option>Today</option><option>This week</option><option>All</option>
+            </select>
+          </div>
+
+          <div class="booking-card" onclick="location.href='sp-booking-detail.html'">
+            <div class="bc-top">
+              <span class="badge bg-blue bc-svc">PILO</span>
+              <span class="bc-vessel">COSCO ANTWERP</span>
+              <span class="badge svc-assigned">ASSIGNED</span>
+            </div>
+            <div class="bc-detail">VIS-2011 · 10 May 08:00 · Berth 2 · IMO 9301443</div>
+            <div class="bc-footer">
+              <span style="font-size:11px;color:var(--orange);font-family:'JetBrains Mono',monospace">⚑ Assign resources before execution</span>
+              <a class="act-btn primary-act" href="sp-booking-detail.html">Open Booking →</a>
+            </div>
+          </div>
+
+          <div class="booking-card" onclick="location.href='sp-booking-detail.html'">
+            <div class="bc-top">
+              <span class="badge bg-teal bc-svc">PILO</span>
+              <span class="bc-vessel">MAERSK TANGIER</span>
+              <span class="badge svc-progress">IN PROGRESS</span>
+            </div>
+            <div class="bc-detail">VIS-2010 · 08 May 06:00 · Berth 1 · IMO 9301112</div>
+            <div class="bc-footer">
+              <span style="font-size:11px;color:var(--teal);font-family:'JetBrains Mono',monospace">⏱ Started 06:12 UTC — Record completion</span>
+              <a class="act-btn primary-act" href="sp-booking-detail.html">Record Completion →</a>
+            </div>
+          </div>
+
+          <div class="booking-card">
+            <div class="bc-top">
+              <span class="badge bg-blue bc-svc">PILO</span>
+              <span class="bc-vessel">MSC GULSUN</span>
+              <span class="badge svc-resources">RESOURCES ALLOC.</span>
+            </div>
+            <div class="bc-detail">VIS-2009 · 11 May 14:00 · Berth 4 · IMO 9706313</div>
+            <div class="bc-footer">
+              <span style="font-size:11px;color:var(--purple);font-family:'JetBrains Mono',monospace">Resources confirmed — awaiting start</span>
+              <button class="act-btn">View</button>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <a href="sp-bookings.html" style="font-size:12px;color:var(--primary);text-decoration:none;font-family:'JetBrains Mono',monospace">View all 5 bookings →</a>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <!-- My Resources -->
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title">My Resources</div>
+              <a href="sp-resources.html" style="font-size:11px;color:var(--primary);text-decoration:none;font-family:'JetBrains Mono',monospace">Manage →</a>
+            </div>
+            <div class="panel-body">
+              <div class="res-availability">
+                <div class="ra-dot" style="background:var(--green)"></div>
+                <div style="flex:1"><div class="ra-name">Ahmed Karimi</div><div class="ra-type">Licensed Pilot</div></div>
+                <span class="badge res-available" style="font-size:9px">Available</span>
+              </div>
+              <div class="res-availability">
+                <div class="ra-dot" style="background:var(--orange)"></div>
+                <div style="flex:1"><div class="ra-name">Pilot Boat ATLAS</div><div class="ra-type">Vessel</div></div>
+                <span class="badge res-in-use" style="font-size:9px">In Use</span>
+              </div>
+              <div class="res-availability">
+                <div class="ra-dot" style="background:var(--green)"></div>
+                <div style="flex:1"><div class="ra-name">Omar Tahiri</div><div class="ra-type">Licensed Pilot</div></div>
+                <span class="badge res-available" style="font-size:9px">Available</span>
+              </div>
+              <div class="res-availability">
+                <div class="ra-dot" style="background:var(--red)"></div>
+                <div style="flex:1"><div class="ra-name">Tug Boat SAFI</div><div class="ra-type">Vessel</div></div>
+                <span class="badge res-maint" style="font-size:9px">Maintenance</span>
+              </div>
+              <div class="res-availability">
+                <div class="ra-dot" style="background:var(--orange)"></div>
+                <div style="flex:1"><div class="ra-name">Pilot Boat CASA I</div><div class="ra-type">Vessel</div></div>
+                <span class="badge res-in-use" style="font-size:9px">In Use</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Upcoming 48h -->
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title">Upcoming (Next 48h)</div>
+              <span style="font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace">10-11 MAY</span>
+            </div>
+            <div class="panel-body">
+              <div class="upcoming-item">
+                <div class="up-time">08:00</div>
+                <div><div style="font-size:12px;font-weight:500;color:var(--t1)">COSCO ANTWERP</div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace">Pilotage · Berth 2</div></div>
+                <span class="badge svc-assigned" style="margin-left:auto;font-size:9px">ASSIGNED</span>
+              </div>
+              <div class="upcoming-item">
+                <div class="up-time">14:00</div>
+                <div><div style="font-size:12px;font-weight:500;color:var(--t1)">MSC GULSUN</div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace">Pilotage · Berth 4</div></div>
+                <span class="badge svc-resources" style="margin-left:auto;font-size:9px">RES. ALLOC.</span>
+              </div>
+              <div class="upcoming-item">
+                <div class="up-time">18:00</div>
+                <div><div style="font-size:12px;font-weight:500;color:var(--t1)">EVER ACE</div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace">Pilotage · Berth 3</div></div>
+                <span class="badge svc-assigned" style="margin-left:auto;font-size:9px">ASSIGNED</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>initPage('sp','dashboard','Omar Tazi','OT');</script>
+</body>
+</html>

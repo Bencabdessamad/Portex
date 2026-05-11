@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Admin Dashboard</title>
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">Operations Dashboard</div>
+        <div class="pg-sub">PORT MANAGEMENT INFORMATION SYSTEM — UTC+00:00</div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--primary)"></div>
+          <div class="kpi-label">Total Users</div>
+          <div class="kpi-value">14</div>
+          <div class="kpi-sub">9 ACTIVE · 3 PENDING · 2 SUSPENDED</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--blue)"></div>
+          <div class="kpi-label">Active Vessels</div>
+          <div class="kpi-value">10</div>
+          <div class="kpi-sub">REGISTERED IN REGISTRY</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--green)"></div>
+          <div class="kpi-label">Visits Today</div>
+          <div class="kpi-value">7</div>
+          <div class="kpi-sub">ACTIVE PORT CALLS</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--orange)"></div>
+          <div class="kpi-label">Pending Approvals</div>
+          <div class="kpi-value">3</div>
+          <div class="kpi-sub">VISITS AWAITING HM REVIEW</div>
+        </div>
+      </div>
+
+      <!-- Panels row 1 -->
+      <div class="panels-60-40">
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title">Activity Feed</div>
+            <span class="badge bg-green"><span class="dot"></span>LIVE</span>
+          </div>
+          <div class="panel-body" id="activity-feed">
+            <div class="feed-entry">
+              <div class="feed-dot" style="background:var(--purple)"></div>
+              <div>
+                <div class="feed-time" id="ft1">—</div>
+                <div class="feed-msg">VISIT_CREATED — VIS-2011 · COSCO ANTWERP · Maroc Agents SARL</div>
+              </div>
+            </div>
+            <div class="feed-entry">
+              <div class="feed-dot" style="background:var(--green)"></div>
+              <div>
+                <div class="feed-time" id="ft2">—</div>
+                <div class="feed-msg">USER_CREATED — Omar Tazi · Service Provider · Atlantic Pilot</div>
+              </div>
+            </div>
+            <div class="feed-entry">
+              <div class="feed-dot" style="background:var(--blue)"></div>
+              <div>
+                <div class="feed-time" id="ft3">—</div>
+                <div class="feed-msg">VESSEL_EDITED — EMMA MAERSK · Summer Draught updated 14.5→13.4m</div>
+              </div>
+            </div>
+            <div class="feed-entry">
+              <div class="feed-dot" style="background:var(--teal)"></div>
+              <div>
+                <div class="feed-time" id="ft4">—</div>
+                <div class="feed-msg">SERVICE_COMPLETED — PILO · VIS-2010 · MAERSK TANGIER · Berth 1</div>
+              </div>
+            </div>
+            <div class="feed-entry">
+              <div class="feed-dot" style="background:var(--orange)"></div>
+              <div>
+                <div class="feed-time" id="ft5">—</div>
+                <div class="feed-msg">VISIT_APPROVED — VIS-2009 · MSC GULSUN · HM Rachid El Amrani</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <!-- System Status -->
+          <div class="panel">
+            <div class="panel-hdr"><div class="panel-title">System Status</div></div>
+            <div class="panel-body">
+              <div class="status-item">
+                <div><div class="status-name">Core API</div><div class="status-sub">mpis-api.internal:8443</div></div>
+                <span class="badge bg-green"><span class="dot"></span>ONLINE</span>
+              </div>
+              <div class="status-item">
+                <div><div class="status-name">Auth Service</div><div class="status-sub">auth.mpis:3001</div></div>
+                <span class="badge bg-green"><span class="dot"></span>ONLINE</span>
+              </div>
+              <div class="status-item">
+                <div><div class="status-name">Email Service</div><div class="status-sub">smtp.mpis:587</div></div>
+                <span class="badge bg-green"><span class="dot"></span>ONLINE</span>
+              </div>
+              <div class="status-item">
+                <div><div class="status-name">Lloyd's Register API</div><div class="status-sub">api.lr.org/v2</div></div>
+                <span class="badge bg-green"><span class="dot"></span>ONLINE</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="panel">
+            <div class="panel-hdr"><div class="panel-title">Quick Actions</div></div>
+            <div class="panel-body">
+              <div class="qa-grid">
+                <div class="qa-card" onclick="location.href='admin-users.html'">
+                  <div class="qa-icon">👤</div>
+                  <div><div class="qa-label">Add User</div><div class="qa-sub">Create account</div></div>
+                </div>
+                <div class="qa-card" onclick="location.href='vessels.html'">
+                  <div class="qa-icon">🚢</div>
+                  <div><div class="qa-label">Register Vessel</div><div class="qa-sub">Add to registry</div></div>
+                </div>
+                <div class="qa-card" onclick="location.href='visits-admin.html'">
+                  <div class="qa-icon">⏳</div>
+                  <div><div class="qa-label">Review Pending</div><div class="qa-sub">3 visits waiting</div></div>
+                </div>
+                <div class="qa-card" onclick="location.href='admin-providers.html'">
+                  <div class="qa-icon">🔧</div>
+                  <div><div class="qa-label">Providers</div><div class="qa-sub">Manage SP orgs</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Visits -->
+      <div class="panel">
+        <div class="panel-hdr">
+          <div class="panel-title">Recent Visits</div>
+          <a href="visits-admin.html" style="font-size:11px;color:var(--primary);text-decoration:none;font-family:'JetBrains Mono',monospace">View all →</a>
+        </div>
+        <div class="tbl-wrap" style="border:none">
+          <table>
+            <thead><tr>
+              <th>Visit Ref</th><th>Vessel</th><th>Agent Org</th><th>ETA</th><th>ETD</th><th>State</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr class="clickable" onclick="location.href='visits-admin.html'">
+                <td class="mono">VIS-2011</td>
+                <td style="font-weight:600">COSCO ANTWERP</td>
+                <td class="dim">Maroc Agents SARL</td>
+                <td class="mono">10 May 08:00</td>
+                <td class="mono">12 May 18:00</td>
+                <td><span class="badge vs-submitted"><span class="dot" style="background:var(--blue)"></span>SUBMITTED</span></td>
+                <td><div class="act-row"><a class="act-btn primary-act" href="visits-admin.html">Review →</a></div></td>
+              </tr>
+              <tr class="clickable">
+                <td class="mono">VIS-2010</td>
+                <td style="font-weight:600">MAERSK TANGIER</td>
+                <td class="dim">Maroc Agents SARL</td>
+                <td class="mono">08 May 06:00</td>
+                <td class="mono">—</td>
+                <td><span class="badge vs-in-progress"><span class="dot" style="background:var(--teal)"></span>IN PROGRESS</span></td>
+                <td><div class="act-row"><button class="act-btn">View</button></div></td>
+              </tr>
+              <tr class="clickable">
+                <td class="mono">VIS-2009</td>
+                <td style="font-weight:600">MSC GULSUN</td>
+                <td class="dim">GlobShip Agency</td>
+                <td class="mono">11 May 14:00</td>
+                <td class="mono">14 May 06:00</td>
+                <td><span class="badge vs-approved"><span class="dot" style="background:var(--green)"></span>APPROVED</span></td>
+                <td><div class="act-row"><button class="act-btn">View</button></div></td>
+              </tr>
+              <tr class="clickable">
+                <td class="mono">VIS-2008</td>
+                <td style="font-weight:600">EVER ACE</td>
+                <td class="dim">Atlantic Agency</td>
+                <td class="mono">09 May 10:00</td>
+                <td class="mono">11 May 22:00</td>
+                <td><span class="badge vs-svc-req"><span class="dot" style="background:var(--teal)"></span>SERVICES REQ.</span></td>
+                <td><div class="act-row"><button class="act-btn">View</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>
+initPage('admin','dashboard','System Admin','SA');
+
+const now = new Date();
+const fmt = (mins) => {
+  const d = new Date(now.getTime() - mins * 60000);
+  return d.toISOString().replace('T',' ').slice(0,19) + ' UTC';
+};
+document.getElementById('ft1').textContent = fmt(5);
+document.getElementById('ft2').textContent = fmt(42);
+document.getElementById('ft3').textContent = fmt(118);
+document.getElementById('ft4').textContent = fmt(240);
+document.getElementById('ft5').textContent = fmt(380);
+</script>
+</body>
+</html>

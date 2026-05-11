@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — HM Dashboard</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.review-card {
+  background: var(--s3); border: 1px solid var(--b1); border-radius: 3px;
+  padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center;
+  gap: 14px; transition: border-color .15s; cursor: pointer;
+}
+.review-card:hover { border-color: var(--primary); }
+.review-card-ref { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--primary); min-width: 80px; }
+.movement-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--b1); }
+.movement-row:last-child { border-bottom: none; }
+.mov-time { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--t1); min-width: 52px; }
+.mov-vessel { font-size: 13px; font-weight: 500; color: var(--t1); }
+.mov-detail { font-size: 11px; color: var(--t2); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
+.mov-type { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 2px; text-transform: uppercase; margin-left: auto; flex-shrink: 0; }
+.mov-arr { background: rgba(34,197,94,.1); color: var(--green); }
+.mov-dep { background: rgba(239,68,68,.1); color: var(--red); }
+.auth-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--b1); }
+.auth-row:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">Harbour Master Operations</div>
+        <div class="pg-sub">OPERATIONAL CONTROL CENTER — PORT AUTHORITY CASABLANCA — UTC+00:00</div>
+      </div>
+
+      <!-- Alert banner -->
+      <div class="alert-banner">
+        <div class="alert-banner-dot"></div>
+        <span>3 visits are awaiting your review and approval</span>
+        <button class="alert-banner-cta" onclick="location.href='visits-hm.html'">Review Now →</button>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--orange)"></div>
+          <div class="kpi-label">Pending Review</div>
+          <div class="kpi-value" style="color:var(--orange)">3</div>
+          <div class="kpi-sub">VISITS IN SUBMITTED STATE</div>
+          <div class="prog-bar"><div class="prog-fill" style="width:30%;background:var(--orange)"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--green)"></div>
+          <div class="kpi-label">Approved Today</div>
+          <div class="kpi-value">2</div>
+          <div class="kpi-sub">VISITS APPROVED</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--blue)"></div>
+          <div class="kpi-label">Vessels In Port</div>
+          <div class="kpi-value">5</div>
+          <div class="kpi-sub">CURRENTLY BERTHED</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--teal)"></div>
+          <div class="kpi-label">Services In Progress</div>
+          <div class="kpi-value">8</div>
+          <div class="kpi-sub">ACTIVE EXECUTIONS</div>
+        </div>
+      </div>
+
+      <div class="panels-60-40">
+        <!-- Review Queue -->
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title">Review Queue</div>
+            <span class="badge bg-orange"><span class="dot"></span>3 PENDING</span>
+          </div>
+          <div class="panel-body">
+            <div class="review-card" onclick="location.href='visit-review.html'">
+              <div>
+                <div class="review-card-ref">VIS-2011</div>
+              </div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600;color:var(--t1)">COSCO ANTWERP</div>
+                <div style="font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace">Maroc Agents SARL · IMO 9301443</div>
+                <div style="font-size:11px;color:var(--t2);margin-top:3px">ETA: 10 May 08:00 · Purpose: Loading</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-bottom:6px">Submitted 47 min ago</div>
+                <a class="act-btn primary-act" href="visit-review.html" onclick="event.stopPropagation()">Review →</a>
+              </div>
+            </div>
+            <div class="review-card" onclick="location.href='visit-review.html'">
+              <div><div class="review-card-ref">VIS-2009</div></div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600;color:var(--t1)">MSC GULSUN</div>
+                <div style="font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace">GlobShip Agency · IMO 9706313</div>
+                <div style="font-size:11px;color:var(--t2);margin-top:3px">ETA: 11 May 14:00 · Purpose: Unloading</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-bottom:6px">Submitted 2h ago</div>
+                <a class="act-btn primary-act" href="visit-review.html" onclick="event.stopPropagation()">Review →</a>
+              </div>
+            </div>
+            <div class="review-card" onclick="location.href='visit-review.html'">
+              <div><div class="review-card-ref">VIS-2007</div></div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600;color:var(--t1)">EVER ACE</div>
+                <div style="font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace">Atlantic Agency · IMO 9839430</div>
+                <div style="font-size:11px;color:var(--t2);margin-top:3px">ETA: 09 May 10:00 · Purpose: Loading</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-bottom:6px">Submitted 5h ago</div>
+                <a class="act-btn primary-act" href="visit-review.html" onclick="event.stopPropagation()">Review →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <!-- Today's Movements -->
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title">Today's Movements</div>
+              <span style="font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace">10 MAY 2026</span>
+            </div>
+            <div class="panel-body">
+              <div class="movement-row">
+                <div class="mov-time">08:00</div>
+                <div><div class="mov-vessel">COSCO ANTWERP</div><div class="mov-detail">Berth 2 · IMO 9301443</div></div>
+                <div class="mov-type mov-arr">ARR</div>
+              </div>
+              <div class="movement-row">
+                <div class="mov-time">12:30</div>
+                <div><div class="mov-vessel">MAERSK TANGIER</div><div class="mov-detail">Berth 1 · IMO 9301112</div></div>
+                <div class="mov-type mov-dep">DEP</div>
+              </div>
+              <div class="movement-row">
+                <div class="mov-time">14:00</div>
+                <div><div class="mov-vessel">MSC GULSUN</div><div class="mov-detail">Berth 4 · IMO 9706313</div></div>
+                <div class="mov-type mov-arr">ARR</div>
+              </div>
+              <div class="movement-row">
+                <div class="mov-time">18:00</div>
+                <div><div class="mov-vessel">EVER ACE</div><div class="mov-detail">Berth 3 · IMO 9839430</div></div>
+                <div class="mov-type mov-dep">DEP</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Services Awaiting HM Authorization -->
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title">Awaiting Authorization</div>
+              <span class="badge bg-orange"><span class="dot"></span>3</span>
+            </div>
+            <div class="panel-body">
+              <div class="auth-row">
+                <span class="badge bg-blue" style="min-width:40px;justify-content:center">PILO</span>
+                <div style="flex:1"><div style="font-size:12px;font-weight:500">VIS-2011 · COSCO ANTWERP</div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace">Pilotage · 10 May 08:00</div></div>
+                <button class="act-btn primary-act">Authorize</button>
+              </div>
+              <div class="auth-row">
+                <span class="badge bg-blue" style="min-width:40px;justify-content:center">MOOR</span>
+                <div style="flex:1"><div style="font-size:12px;font-weight:500">VIS-2010 · MAERSK TANGIER</div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace">Mooring · 08 May 06:00</div></div>
+                <button class="act-btn primary-act">Authorize</button>
+              </div>
+              <div class="auth-row">
+                <span class="badge bg-blue" style="min-width:40px;justify-content:center">TOWG</span>
+                <div style="flex:1"><div style="font-size:12px;font-weight:500">VIS-2009 · MSC GULSUN</div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace">Towage · 11 May 14:00</div></div>
+                <button class="act-btn primary-act">Authorize</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>initPage('hm','dashboard','Rachid El Amrani','RA');</script>
+</body>
+</html>

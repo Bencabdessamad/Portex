@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Services Catalog</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.cat-badge-mandatory { background: rgba(239,68,68,.1); color: var(--red); border: 1px solid rgba(239,68,68,.25); font-size: 9px; padding: 2px 7px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.cat-badge-optional  { background: rgba(122,143,166,.08); color: var(--t2); border: 1px solid var(--b2); font-size: 9px; padding: 2px 7px; border-radius: 2px; font-family: 'JetBrains Mono', monospace; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.svc-detail-row { display: flex; align-items: flex-start; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--b1); }
+.svc-detail-row:last-child { border-bottom: none; }
+.svc-code-lbl { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: var(--primary); min-width: 52px; }
+.svc-def-name { font-size: 13px; font-weight: 600; color: var(--t1); margin-bottom: 3px; }
+.svc-def-desc { font-size: 11px; color: var(--t2); line-height: 1.5; }
+.svc-def-res  { margin-top: 5px; display: flex; gap: 5px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">Services Catalog</div>
+        <div class="pg-sub">PORT SERVICE DEFINITIONS — MANDATORY AND OPTIONAL — MPIS-VSM</div>
+      </div>
+
+      <!-- Summary KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary)"></div><div class="kpi-label">Total Services</div><div class="kpi-value">7</div><div class="kpi-sub">IN CATALOG</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--red)"></div><div class="kpi-label">Mandatory</div><div class="kpi-value">3</div><div class="kpi-sub">AUTO-INCLUDED</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--t2)"></div><div class="kpi-label">Optional</div><div class="kpi-value">4</div><div class="kpi-sub">ON REQUEST</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--green)"></div><div class="kpi-label">Providers Assigned</div><div class="kpi-value">5</div><div class="kpi-sub">ACTIVE ASSIGNMENTS</div></div>
+      </div>
+
+      <div class="panels-2">
+        <!-- Mandatory Services -->
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title">Mandatory Services</div>
+            <span class="cat-badge-mandatory">AUTO-INCLUDED</span>
+          </div>
+          <div class="panel-body">
+            <div class="info-banner" style="margin-bottom:14px">
+              <div class="info-dot"></div>
+              <span>Mandatory services are automatically requested for every vessel arrival and departure. They cannot be removed from a visit.</span>
+            </div>
+
+            <div class="svc-detail-row">
+              <div class="svc-code-lbl">PILO</div>
+              <div style="flex:1">
+                <div class="svc-def-name">Pilotage</div>
+                <div class="svc-def-desc">Licensed pilot boards and guides the vessel through port waters during arrival and departure maneuvers.</div>
+                <div class="svc-def-res">
+                  <span class="perm-tag">Licensed Pilot ×1</span>
+                  <span class="perm-tag">Pilot Boat ×1</span>
+                </div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <span class="badge bg-green" style="font-size:9px;display:block;margin-bottom:6px"><span class="dot"></span>ACTIVE</span>
+                <div class="dim" style="font-size:10px">Atlantic Pilot Services</div>
+              </div>
+            </div>
+
+            <div class="svc-detail-row">
+              <div class="svc-code-lbl">TOWG</div>
+              <div style="flex:1">
+                <div class="svc-def-name">Tug Assistance</div>
+                <div class="svc-def-desc">Tug boats assist vessel maneuvering within port waters. Quantity determined by vessel Gross Tonnage per defined scale.</div>
+                <div class="svc-def-res">
+                  <span class="perm-tag">Tug Boat ×N (GT-based)</span>
+                </div>
+                <div style="margin-top:6px;background:var(--s4);border:1px solid var(--b1);border-radius:2px;padding:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2)">
+                  &lt;10,000 GT → 1 tug · 10–50k → 2 · 50–100k → 3 · &gt;100k → 4
+                </div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <span class="badge bg-green" style="font-size:9px;display:block;margin-bottom:6px"><span class="dot"></span>ACTIVE</span>
+                <div class="dim" style="font-size:10px">Casablanca Tug Co.</div>
+              </div>
+            </div>
+
+            <div class="svc-detail-row">
+              <div class="svc-code-lbl">MOOR</div>
+              <div style="flex:1">
+                <div class="svc-def-name">Mooring Service</div>
+                <div class="svc-def-desc">Shore-based personnel secure the vessel to the berth using lines and equipment. Resource count depends on berth configuration.</div>
+                <div class="svc-def-res">
+                  <span class="perm-tag">Mooring Personnel ×N</span>
+                  <span class="perm-tag">Mooring Vehicle ×N</span>
+                </div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <span class="badge bg-green" style="font-size:9px;display:block;margin-bottom:6px"><span class="dot"></span>ACTIVE</span>
+                <div class="dim" style="font-size:10px">Port Mooring Services</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional Services -->
+        <div class="panel">
+          <div class="panel-hdr">
+            <div class="panel-title">Optional Services</div>
+            <span class="cat-badge-optional">ON REQUEST</span>
+          </div>
+          <div class="panel-body">
+
+            <div class="svc-detail-row">
+              <div class="svc-code-lbl">POTW</div>
+              <div style="flex:1">
+                <div class="svc-def-name">Fresh Water Supply</div>
+                <div class="svc-def-desc">Provision of potable water via water barge. Quantity specified in cubic metres by the requesting agent.</div>
+                <div class="svc-def-res"><span class="perm-tag">Water Barge ×1</span></div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <span class="badge bg-green" style="font-size:9px;display:block;margin-bottom:6px"><span class="dot"></span>ACTIVE</span>
+                <div class="dim" style="font-size:10px">Casablanca Water Svc</div>
+              </div>
+            </div>
+
+            <div class="svc-detail-row">
+              <div class="svc-code-lbl">BUNK</div>
+              <div style="flex:1">
+                <div class="svc-def-name">Bunkering</div>
+                <div class="svc-def-desc">Fuel supply — HFO, MGO, or LNG. Quantity specified in metric tonnes. Fuel type must be declared at request.</div>
+                <div class="svc-def-res"><span class="perm-tag">Bunker Barge ×1</span><span class="perm-tag">Safety Officer ×1</span></div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <span class="badge bg-green" style="font-size:9px;display:block;margin-bottom:6px"><span class="dot"></span>ACTIVE</span>
+                <div class="dim" style="font-size:10px">Med Bunker Group</div>
+              </div>
+            </div>
+
+            <div class="svc-detail-row">
+              <div class="svc-code-lbl">TRSH</div>
+              <div style="flex:1">
+                <div class="svc-def-name">Solid Waste Collection</div>
+                <div class="svc-def-desc">Waste reception in compliance with MARPOL Annex V. Quantity in cubic metres. Waste category must be declared.</div>
+                <div class="svc-def-res"><span class="perm-tag">Waste Vehicle ×1</span><span class="perm-tag">Operator ×2</span></div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <span class="badge bg-green" style="font-size:9px;display:block;margin-bottom:6px"><span class="dot"></span>ACTIVE</span>
+                <div class="dim" style="font-size:10px">EcoPort Services</div>
+              </div>
+            </div>
+
+            <div class="svc-detail-row">
+              <div class="svc-code-lbl">IMGT</div>
+              <div style="flex:1">
+                <div class="svc-def-name">Crew Change</div>
+                <div class="svc-def-desc">Immigration processing and crew transport coordination. Number of embarking and disembarking crew must be declared.</div>
+                <div class="svc-def-res"><span class="perm-tag">Immigration Officer ×1</span><span class="perm-tag">Transport Vehicle ×1</span></div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <span class="badge bg-red" style="font-size:9px;display:block;margin-bottom:6px"><span class="dot"></span>NO PROVIDER</span>
+                <button class="act-btn primary-act" style="font-size:10px">Assign Provider</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Full table view -->
+      <div class="panel" style="margin-top:0">
+        <div class="panel-hdr">
+          <div class="panel-title">All Services — Table View</div>
+          <button class="add-btn" style="font-size:11px;padding:5px 12px">+ Add Optional Service</button>
+        </div>
+        <div class="tbl-wrap" style="border:none">
+          <table>
+            <thead><tr><th>Code</th><th>Service Name</th><th>Category</th><th>Assigned Provider</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td class="mono" style="color:var(--primary);font-weight:700">PILO</td><td style="font-weight:600">Pilotage</td><td><span class="cat-badge-mandatory">Mandatory</span></td><td class="dim">Atlantic Pilot Services</td><td><span class="badge bg-green" style="font-size:9px"><span class="dot"></span>ACTIVE</span></td><td><div class="act-row"><button class="act-btn edit">Edit</button><button class="act-btn primary-act">Reassign</button></div></td></tr>
+              <tr><td class="mono" style="color:var(--primary);font-weight:700">TOWG</td><td style="font-weight:600">Tug Assistance</td><td><span class="cat-badge-mandatory">Mandatory</span></td><td class="dim">Casablanca Tug Co.</td><td><span class="badge bg-green" style="font-size:9px"><span class="dot"></span>ACTIVE</span></td><td><div class="act-row"><button class="act-btn edit">Edit</button><button class="act-btn primary-act">Reassign</button></div></td></tr>
+              <tr><td class="mono" style="color:var(--primary);font-weight:700">MOOR</td><td style="font-weight:600">Mooring Service</td><td><span class="cat-badge-mandatory">Mandatory</span></td><td class="dim">Port Mooring Services</td><td><span class="badge bg-green" style="font-size:9px"><span class="dot"></span>ACTIVE</span></td><td><div class="act-row"><button class="act-btn edit">Edit</button><button class="act-btn primary-act">Reassign</button></div></td></tr>
+              <tr><td class="mono">POTW</td><td>Fresh Water Supply</td><td><span class="cat-badge-optional">Optional</span></td><td class="dim">Casablanca Water Svc</td><td><span class="badge bg-green" style="font-size:9px"><span class="dot"></span>ACTIVE</span></td><td><div class="act-row"><button class="act-btn edit">Edit</button></div></td></tr>
+              <tr><td class="mono">BUNK</td><td>Bunkering</td><td><span class="cat-badge-optional">Optional</span></td><td class="dim">Med Bunker Group</td><td><span class="badge bg-green" style="font-size:9px"><span class="dot"></span>ACTIVE</span></td><td><div class="act-row"><button class="act-btn edit">Edit</button></div></td></tr>
+              <tr><td class="mono">TRSH</td><td>Solid Waste Collection</td><td><span class="cat-badge-optional">Optional</span></td><td class="dim">EcoPort Services</td><td><span class="badge bg-green" style="font-size:9px"><span class="dot"></span>ACTIVE</span></td><td><div class="act-row"><button class="act-btn edit">Edit</button></div></td></tr>
+              <tr><td class="mono">IMGT</td><td>Crew Change</td><td><span class="cat-badge-optional">Optional</span></td><td class="dim" style="color:var(--red)">No provider assigned</td><td><span class="badge bg-red" style="font-size:9px"><span class="dot"></span>NO PROVIDER</span></td><td><div class="act-row"><button class="act-btn edit">Edit</button><button class="act-btn primary-act">Assign Provider</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+<script src="base.js"></script><script src="shell.js"></script>
+<script>initPage('admin','catalog','System Admin','SA');</script>
+</body></html>

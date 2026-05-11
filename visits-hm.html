@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Visit Management</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.visits-layout { display: grid; grid-template-columns: 200px 1fr; gap: 16px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">Visit Management</div>
+        <div class="pg-sub">ALL PORT VISITS — HARBOUR MASTER VIEW — MPIS-VIS</div>
+      </div>
+
+      <!-- Pending banner -->
+      <div class="alert-banner">
+        <div class="alert-banner-dot"></div>
+        <span>3 visits in SUBMITTED state are awaiting your review</span>
+        <button class="alert-banner-cta" onclick="filterByState('submitted')">Review Queue →</button>
+      </div>
+
+      <div class="visits-layout">
+        <!-- State filter sidebar -->
+        <div>
+          <div style="font-size:9px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.12em;font-family:'JetBrains Mono',monospace;padding:0 4px;margin-bottom:10px">Filter by State</div>
+          <div class="state-filter">
+            <div class="sf-item active" id="sf-all" onclick="filterByState('all',this)">
+              All Visits <span class="sf-count">12</span>
+            </div>
+            <div class="sf-item" id="sf-submitted" onclick="filterByState('submitted',this)">
+              Submitted <span class="sf-count" style="background:rgba(59,130,246,.15);color:var(--blue)">3</span>
+            </div>
+            <div class="sf-item" id="sf-under-review" onclick="filterByState('under-review',this)">
+              Under Review <span class="sf-count" style="background:rgba(245,158,11,.15);color:var(--orange)">1</span>
+            </div>
+            <div class="sf-item" id="sf-approved" onclick="filterByState('approved',this)">
+              Approved <span class="sf-count" style="background:rgba(34,197,94,.12);color:var(--green)">3</span>
+            </div>
+            <div class="sf-item" id="sf-svc-req" onclick="filterByState('svc-req',this)">
+              Services Req. <span class="sf-count" style="background:rgba(0,184,150,.12);color:var(--teal)">2</span>
+            </div>
+            <div class="sf-item" id="sf-in-progress" onclick="filterByState('in-progress',this)">
+              In Progress <span class="sf-count" style="background:rgba(0,184,150,.12);color:var(--teal)">2</span>
+            </div>
+            <div class="sf-item" id="sf-rejected" onclick="filterByState('rejected',this)">
+              Rejected <span class="sf-count" style="background:rgba(239,68,68,.1);color:var(--red)">1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main visit table -->
+        <div>
+          <div class="toolbar">
+            <input class="t-search" type="text" placeholder="Search by vessel name…" oninput="searchVisits(this.value)">
+            <input class="date-inp" type="date" value="2026-05-01">
+            <input class="date-inp" type="date" value="2026-05-31">
+            <select class="t-select"><option value="">All Agents</option><option>Maroc Agents SARL</option><option>GlobShip Agency</option></select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr>
+                <th>Visit Ref</th><th>Vessel</th><th>Agent</th><th>ETA</th><th>ETD</th><th>State</th><th>Actions</th>
+              </tr></thead>
+              <tbody id="visits-tbody">
+                <tr class="clickable" data-state="submitted">
+                  <td class="mono">VIS-2011</td><td style="font-weight:600">COSCO ANTWERP</td>
+                  <td class="dim">Maroc Agents</td><td class="mono">10 May 08:00</td><td class="mono">12 May 18:00</td>
+                  <td><span class="badge vs-submitted"><span class="dot" style="background:var(--blue)"></span>SUBMITTED</span></td>
+                  <td><div class="act-row"><a class="act-btn primary-act" href="visit-review.html">Review →</a></div></td>
+                </tr>
+                <tr class="clickable" data-state="submitted">
+                  <td class="mono">VIS-2009</td><td style="font-weight:600">MSC GULSUN</td>
+                  <td class="dim">GlobShip</td><td class="mono">11 May 14:00</td><td class="mono">14 May 06:00</td>
+                  <td><span class="badge vs-submitted"><span class="dot" style="background:var(--blue)"></span>SUBMITTED</span></td>
+                  <td><div class="act-row"><a class="act-btn primary-act" href="visit-review.html">Review →</a></div></td>
+                </tr>
+                <tr class="clickable" data-state="under-review">
+                  <td class="mono">VIS-2007</td><td style="font-weight:600">EVER ACE</td>
+                  <td class="dim">Atlantic Agency</td><td class="mono">09 May 10:00</td><td class="mono">11 May 22:00</td>
+                  <td><span class="badge vs-under-review"><span class="dot" style="background:var(--orange)"></span>UNDER REVIEW</span></td>
+                  <td><div class="act-row"><a class="act-btn primary-act" href="visit-review.html">Continue →</a></div></td>
+                </tr>
+                <tr class="clickable" data-state="approved">
+                  <td class="mono">VIS-2010</td><td style="font-weight:600">EMMA MAERSK</td>
+                  <td class="dim">Maroc Agents</td><td class="mono">10 May 08:00</td><td class="mono">12 May 18:00</td>
+                  <td><span class="badge vs-approved"><span class="dot" style="background:var(--green)"></span>APPROVED</span></td>
+                  <td><div class="act-row"><button class="act-btn">View</button></div></td>
+                </tr>
+                <tr class="clickable" data-state="svc-req">
+                  <td class="mono">VIS-2008</td><td style="font-weight:600">MAERSK TANGIER</td>
+                  <td class="dim">Maroc Agents</td><td class="mono">08 May 06:00</td><td class="mono">—</td>
+                  <td><span class="badge vs-svc-req"><span class="dot" style="background:var(--teal)"></span>SERVICES REQ.</span></td>
+                  <td><div class="act-row"><button class="act-btn primary-act">Assign Services</button></div></td>
+                </tr>
+                <tr class="clickable" data-state="in-progress">
+                  <td class="mono">VIS-2006</td><td style="font-weight:600">HMM ALGECIRAS</td>
+                  <td class="dim">Atlantic Agency</td><td class="mono">07 May 14:00</td><td class="mono">—</td>
+                  <td><span class="badge vs-in-progress"><span class="dot" style="background:var(--teal)"></span>IN PROGRESS</span></td>
+                  <td><div class="act-row"><button class="act-btn">View</button></div></td>
+                </tr>
+                <tr class="clickable" data-state="rejected" style="opacity:.7">
+                  <td class="mono">VIS-2005</td><td style="font-weight:600">MSC LUCIA</td>
+                  <td class="dim">GlobShip</td><td class="mono">05 May 10:00</td><td class="mono">—</td>
+                  <td><span class="badge vs-rejected"><span class="dot" style="background:var(--red)"></span>REJECTED</span></td>
+                  <td><div class="act-row"><button class="act-btn">View</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>
+initPage('hm','visits','Rachid El Amrani','RA');
+
+function filterByState(state, el) {
+  document.querySelectorAll('.sf-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  else document.getElementById('sf-'+state)?.classList.add('active');
+  const rows = document.querySelectorAll('#visits-tbody tr');
+  rows.forEach(r => {
+    r.style.display = (state === 'all' || r.dataset.state === state.replace('sf-','')) ? '' : 'none';
+  });
+}
+function searchVisits(val) {
+  const v = val.toLowerCase();
+  document.querySelectorAll('#visits-tbody tr').forEach(r => {
+    r.style.display = (!v || r.textContent.toLowerCase().includes(v)) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

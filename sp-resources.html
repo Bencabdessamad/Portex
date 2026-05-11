@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — My Resources</title>
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">My Resources</div>
+        <div class="pg-sub">ATLANTIC PILOT SERVICES — RESOURCE POOL MANAGEMENT — MPIS-VSM</div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary)"></div><div class="kpi-label">Total Resources</div><div class="kpi-value">8</div><div class="kpi-sub">IN POOL</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--green)"></div><div class="kpi-label">Available</div><div class="kpi-value">4</div><div class="kpi-sub">READY TO ASSIGN</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--orange)"></div><div class="kpi-label">In Use</div><div class="kpi-value">3</div><div class="kpi-sub">CURRENTLY DEPLOYED</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--red)"></div><div class="kpi-label">Maintenance</div><div class="kpi-value">1</div><div class="kpi-sub">NOT AVAILABLE</div></div>
+      </div>
+
+      <div class="toolbar">
+        <input class="t-search" type="text" placeholder="Search by name or type…" oninput="filterResources(this.value)">
+        <select class="t-select" id="type-filter" onchange="applyFilters()">
+          <option value="">All Types</option>
+          <option>Personnel</option><option>Vessel</option><option>Vehicle</option><option>Equipment</option>
+        </select>
+        <select class="t-select" id="status-filter" onchange="applyFilters()">
+          <option value="">All Statuses</option>
+          <option>Available</option><option>In Use</option><option>Under Maintenance</option>
+        </select>
+        <button class="add-btn" onclick="openModal('modal-add-resource')">+ Add Resource</button>
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Resource Name</th><th>Type</th><th>Service Scope</th>
+            <th>Status</th><th>Cert. Expiry</th><th>Current Assignment</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="res-tbody">
+            <tr class="clickable">
+              <td style="font-weight:600">Ahmed Karimi</td>
+              <td><span class="badge bg-purple" style="font-size:9px">Personnel</span></td>
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td><span class="badge res-in-use"><span class="dot" style="background:var(--orange)"></span>IN USE</span></td>
+              <td class="mono" style="color:var(--green)">2027-08-14</td>
+              <td class="dim">VIS-2010 · Berth 1</td>
+              <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-resource')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">Omar Tahiri</td>
+              <td><span class="badge bg-purple" style="font-size:9px">Personnel</span></td>
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td><span class="badge res-available"><span class="dot" style="background:var(--green)"></span>AVAILABLE</span></td>
+              <td class="mono" style="color:var(--green)">2028-02-28</td>
+              <td class="dim">—</td>
+              <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-resource')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">Mourad Bakkali</td>
+              <td><span class="badge bg-purple" style="font-size:9px">Personnel</span></td>
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td><span class="badge res-available"><span class="dot" style="background:var(--green)"></span>AVAILABLE</span></td>
+              <td class="mono" style="color:var(--orange)">2026-06-01</td>
+              <td class="dim">—</td>
+              <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-resource')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">Pilot Boat ATLAS</td>
+              <td><span class="badge bg-teal" style="font-size:9px">Vessel</span></td>
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td><span class="badge res-in-use"><span class="dot" style="background:var(--orange)"></span>IN USE</span></td>
+              <td class="mono dim">N/A</td>
+              <td class="dim">VIS-2010 · Berth 1</td>
+              <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-resource')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">Pilot Boat CASA I</td>
+              <td><span class="badge bg-teal" style="font-size:9px">Vessel</span></td>
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td><span class="badge res-in-use"><span class="dot" style="background:var(--orange)"></span>IN USE</span></td>
+              <td class="mono dim">N/A</td>
+              <td class="dim">VIS-2008 · Berth 4</td>
+              <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-resource')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">Pilot Boat CASA II</td>
+              <td><span class="badge bg-teal" style="font-size:9px">Vessel</span></td>
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td><span class="badge res-available"><span class="dot" style="background:var(--green)"></span>AVAILABLE</span></td>
+              <td class="mono dim">N/A</td>
+              <td class="dim">—</td>
+              <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-resource')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">Yassine Ouali</td>
+              <td><span class="badge bg-purple" style="font-size:9px">Personnel</span></td>
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td><span class="badge res-available"><span class="dot" style="background:var(--green)"></span>AVAILABLE</span></td>
+              <td class="mono" style="color:var(--green)">2027-11-20</td>
+              <td class="dim">—</td>
+              <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-resource')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable" style="opacity:.7">
+              <td style="font-weight:600">Tug Boat SAFI</td>
+              <td><span class="badge bg-teal" style="font-size:9px">Vessel</span></td>
+              <td><span class="badge bg-teal" style="font-size:9px">TOWG</span></td>
+              <td><span class="badge res-maint"><span class="dot" style="background:var(--red)"></span>MAINTENANCE</span></td>
+              <td class="mono dim">N/A</td>
+              <td class="dim">Engine overhaul</td>
+              <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-resource')">Edit</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cert expiry warning -->
+      <div class="warn-banner" style="margin-top:14px">
+        ⚠ Mourad Bakkali's pilot certification expires in 22 days (2026-06-01). Renew before the deadline to avoid service disruption.
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODAL: ADD RESOURCE -->
+<div class="modal-overlay" id="modal-add-resource" onclick="closeModalOutside(event,'modal-add-resource')">
+  <div class="modal-panel">
+    <div class="modal-hdr"><div class="modal-title">Add Resource</div><button class="modal-close" onclick="closeModal('modal-add-resource')">×</button></div>
+    <div class="form-grid">
+      <div class="fg full"><label class="fl">Resource Name *</label><input class="fi" placeholder="Full name or vessel name"></div>
+      <div class="fg">
+        <label class="fl">Resource Type *</label>
+        <select class="fi" id="res-type-sel" onchange="toggleCertField()">
+          <option value="">Select type</option>
+          <option value="Personnel">Personnel</option>
+          <option value="Vessel">Vessel</option>
+          <option value="Vehicle">Vehicle</option>
+          <option value="Equipment">Equipment</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl">Service Scope *</label>
+        <select class="fi"><option>Pilotage (PILO)</option><option>Towage (TOWG)</option><option>Mooring (MOOR)</option></select>
+      </div>
+      <div class="fg">
+        <label class="fl">Status</label>
+        <select class="fi"><option>Available</option><option>Under Maintenance</option></select>
+      </div>
+      <div class="fg cert-field" id="cert-field" style="display:none">
+        <label class="fl">Certification Expiry</label>
+        <input class="fi" type="date">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-add-resource')">Cancel</button>
+      <button class="btn-primary" onclick="closeModal('modal-add-resource')">Add Resource</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT RESOURCE -->
+<div class="modal-overlay" id="modal-edit-resource" onclick="closeModalOutside(event,'modal-edit-resource')">
+  <div class="modal-panel">
+    <div class="modal-hdr"><div class="modal-title">Edit Resource</div><button class="modal-close" onclick="closeModal('modal-edit-resource')">×</button></div>
+    <div class="form-grid">
+      <div class="fg full"><label class="fl">Resource Name *</label><input class="fi ok" value="Ahmed Karimi"></div>
+      <div class="fg"><label class="fl">Type *</label><select class="fi ok"><option selected>Personnel</option><option>Vessel</option></select></div>
+      <div class="fg"><label class="fl">Service Scope *</label><select class="fi ok"><option selected>Pilotage (PILO)</option><option>Towage (TOWG)</option></select></div>
+      <div class="fg"><label class="fl">Status</label><select class="fi ok"><option selected>Available</option><option>In Use</option><option>Under Maintenance</option></select></div>
+      <div class="fg"><label class="fl">Certification Expiry</label><input class="fi ok" type="date" value="2027-08-14"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-edit-resource')">Cancel</button>
+      <button class="btn-primary" onclick="closeModal('modal-edit-resource')">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script src="base.js"></script><script src="shell.js"></script>
+<script>
+initPage('sp','resources','Omar Tazi','OT');
+function filterResources(val){
+  const v=val.toLowerCase();
+  document.querySelectorAll('#res-tbody tr').forEach(r=>{
+    r.style.display=(!v||r.textContent.toLowerCase().includes(v))?'':'none';
+  });
+}
+function applyFilters(){
+  const t=document.getElementById('type-filter').value.toLowerCase();
+  const s=document.getElementById('status-filter').value.toLowerCase();
+  document.querySelectorAll('#res-tbody tr').forEach(r=>{
+    const txt=r.textContent.toLowerCase();
+    r.style.display=(!t||txt.includes(t))&&(!s||txt.includes(s))?'':'none';
+  });
+}
+function toggleCertField(){
+  const v=document.getElementById('res-type-sel').value;
+  document.getElementById('cert-field').style.display=v==='Personnel'?'block':'none';
+}
+</script>
+</body></html>

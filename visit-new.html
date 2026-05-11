@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — New Visit Request</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.form-wrap { max-width: 720px; margin: 0 auto; }
+.vessel-selected-badge {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  background: var(--s4); border: 1px solid var(--b1); border-radius: 3px; margin-top: 8px;
+}
+.upload-zone {
+  border: 2px dashed var(--b2); border-radius: 3px; padding: 24px;
+  text-align: center; cursor: pointer; transition: border-color .15s, background .15s;
+  background: var(--s2);
+}
+.upload-zone:hover { border-color: var(--primary); background: rgba(0,184,150,.03); }
+.upload-zone-icon { font-size: 28px; margin-bottom: 8px; opacity: .5; }
+.upload-zone-text { font-size: 13px; color: var(--t2); }
+.upload-zone-hint { font-size: 11px; color: var(--t3); margin-top: 4px; font-family: 'JetBrains Mono', monospace; }
+.file-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--s4); border: 1px solid var(--b1); border-radius: 3px; margin-bottom: 6px; }
+.file-icon { font-size: 16px; }
+.file-name { font-size: 12px; font-weight: 500; color: var(--t1); flex: 1; }
+.file-size { font-size: 10px; color: var(--t2); font-family: 'JetBrains Mono', monospace; }
+.sticky-footer { position: sticky; bottom: 0; background: var(--s1); border-top: 1px solid var(--b1); padding: 14px 28px; display: flex; justify-content: flex-end; gap: 10px; margin: 0 -28px -28px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="form-wrap">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+          <div>
+            <div class="pg-title" id="page-title">New Visit Request</div>
+            <div class="pg-sub" id="page-sub">STEP 1 OF 2 — RESERVATION — MPIS-VIS</div>
+          </div>
+          <a href="dashboard-agent.html" class="btn-secondary">← Back</a>
+        </div>
+
+        <!-- Step progress bar -->
+        <div class="step-prog" style="margin-bottom:24px">
+          <div class="sp-step done" id="sp0">1 — Reservation</div>
+          <div class="sp-step current" id="sp1">2 — Confirmation</div>
+          <div class="sp-step" id="sp2">3 — Submitted</div>
+        </div>
+
+        <!-- ══ STEP 1: RESERVATION ══ -->
+        <div id="s1">
+          <!-- Vessel Search -->
+          <div style="margin-bottom:18px">
+            <label class="fl">Vessel *</label>
+            <input class="fi" id="vessel-search" placeholder="Search by name or IMO number…" oninput="searchVessel(this.value)" autocomplete="off">
+            <div class="search-results" id="vessel-results" style="display:none">
+              <div class="sr-item" onclick="selectVessel('COSCO ANTWERP','9301443','Container','Hong Kong')">COSCO ANTWERP <span style="color:var(--t2);font-size:11px;font-family:'JetBrains Mono',monospace">9301443 · Container</span></div>
+              <div class="sr-item" onclick="selectVessel('EMMA MAERSK','9321483','Container','Singapore')">EMMA MAERSK <span style="color:var(--t2);font-size:11px;font-family:'JetBrains Mono',monospace">9321483 · Container</span></div>
+              <div class="sr-item" onclick="selectVessel('MSC GULSUN','9706313','Container','Panama')">MSC GULSUN <span style="color:var(--t2);font-size:11px;font-family:'JetBrains Mono',monospace">9706313 · Container</span></div>
+              <div class="sr-item" onclick="selectVessel('MAERSK TANGIER','9301112','Container','Denmark')">MAERSK TANGIER <span style="color:var(--t2);font-size:11px;font-family:'JetBrains Mono',monospace">9301112 · Container</span></div>
+              <div class="sr-item sr-create" onclick="showInlineForm()">+ Create New Vessel</div>
+            </div>
+            <!-- Selected vessel badge -->
+            <div class="vessel-selected-badge" id="vessel-badge" style="display:none">
+              <span class="badge bg-teal" id="vessel-badge-text"><span class="dot"></span>—</span>
+              <button class="act-btn danger" onclick="clearVessel()" style="margin-left:auto">× Clear</button>
+            </div>
+            <!-- Inline vessel creation -->
+            <div class="inline-form" id="inline-vessel-form" style="display:none">
+              <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--t1);margin-bottom:12px">Create New Vessel</div>
+              <div class="form-grid">
+                <div class="fg">
+                  <label class="fl">IMO *</label>
+                  <div class="imo-row">
+                    <input class="fi" id="v-imo" maxlength="7" placeholder="7 digits" style="font-family:'JetBrains Mono',monospace">
+                    <button class="fetch-btn" id="fetch-btn" onclick="simulateFetch('v-imo')">Fetch LLR</button>
+                  </div>
+                  <div class="fi-err" id="err-vimo" style="display:none">IMO must be exactly 7 numeric digits.</div>
+                  <div class="llr-label" id="llr-label" style="display:none"><div class="llr-dot"></div>Source: Lloyd's Register — <span id="llr-date"></span></div>
+                </div>
+                <div class="fg"><label class="fl">Name *</label><input class="fi" id="v-name" placeholder="Vessel name"></div>
+                <div class="fg"><label class="fl">Type *</label>
+                  <select class="fi" id="v-type"><option value="">Select</option><option>Bulk Carrier</option><option>Container</option><option>Tanker</option><option>General Cargo</option></select>
+                </div>
+                <div class="fg"><label class="fl">Flag *</label>
+                  <select class="fi" id="v-flag"><option value="">Select</option><option>Panama</option><option>Liberia</option><option>Malta</option><option>Singapore</option></select>
+                </div>
+                <div class="fg full"><label class="fl">Owner</label><input class="fi" id="v-owner" placeholder="Shipping company name"></div>
+              </div>
+              <div class="fi-err" id="iv-err" style="display:none;margin-bottom:8px"></div>
+              <button class="btn-primary" style="width:100%;margin-top:10px" onclick="saveInlineVessel()">Save &amp; Select Vessel</button>
+            </div>
+          </div>
+
+          <!-- Reservation form -->
+          <div class="form-grid" style="margin-bottom:20px">
+            <div class="fg">
+              <label class="fl">Port of Call *</label>
+              <input class="fi" placeholder="MACAS — Casablanca" value="MACAS">
+            </div>
+            <div class="fg">
+              <label class="fl">Purpose of Call *</label>
+              <select class="fi">
+                <option value="">Select purpose</option>
+                <option selected>Loading</option><option>Unloading</option><option>Bunkering</option>
+                <option>Crew Change</option><option>Repair</option><option>Transit</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label class="fl">Estimated Arrival (ETA) *</label>
+              <input class="fi" type="datetime-local" id="eta" value="2026-05-15T08:00">
+            </div>
+            <div class="fg">
+              <label class="fl">Estimated Departure (ETD) *</label>
+              <input class="fi" type="datetime-local" id="etd" value="2026-05-17T12:00">
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;gap:10px;padding-top:18px;border-top:1px solid var(--b1)">
+            <a href="dashboard-agent.html" class="btn-secondary">Cancel</a>
+            <button class="btn-primary" onclick="goStep2()">Continue to Confirmation →</button>
+          </div>
+        </div>
+
+        <!-- ══ STEP 2: CONFIRMATION ══ -->
+        <div id="s2" style="display:none">
+          <!-- Reservation recap -->
+          <div style="background:var(--s4);border:1px solid var(--b1);border-radius:3px;padding:14px;margin-bottom:20px">
+            <div style="font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;margin-bottom:10px">Reservation Summary</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px">
+              <div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-bottom:3px">VESSEL</div><div id="recap-vessel" style="font-size:12px;font-weight:600;color:var(--t1)">COSCO ANTWERP</div></div>
+              <div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-bottom:3px">PORT</div><div style="font-size:12px;color:var(--t1)">MACAS</div></div>
+              <div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-bottom:3px">ETA</div><div style="font-size:12px;color:var(--t1)">15 May 08:00</div></div>
+              <div><div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-bottom:3px">PURPOSE</div><div style="font-size:12px;color:var(--t1)">Loading</div></div>
+            </div>
+          </div>
+
+          <!-- Confirmation fields -->
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--t1);margin-bottom:14px">Operational Data</div>
+          <div class="form-grid" style="margin-bottom:20px">
+            <div class="fg">
+              <label class="fl">Previous Port LOCODE *</label>
+              <input class="fi" placeholder="e.g. BEANR" value="BEANR">
+              <div style="font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace;margin-top:3px">Format: CCXXX</div>
+            </div>
+            <div class="fg">
+              <label class="fl">Previous Port ETD *</label>
+              <input class="fi" type="datetime-local" value="2026-05-13T18:00">
+            </div>
+            <div class="fg">
+              <label class="fl">Next Port LOCODE *</label>
+              <input class="fi" placeholder="e.g. ESALG" value="ESALG">
+            </div>
+            <div class="fg" style="display:flex;align-items:flex-end">
+              <div style="width:100%">
+                <label class="fl">ISPS Security Level *</label>
+                <select class="fi"><option selected>Level 1</option><option>Level 2</option><option>Level 3</option></select>
+              </div>
+            </div>
+            <div class="fg">
+              <label class="fl">Arrival Draught Fwd (m) *</label>
+              <input class="fi" type="number" placeholder="14.2" value="14.2" style="font-family:'JetBrains Mono',monospace">
+            </div>
+            <div class="fg">
+              <label class="fl">Arrival Draught Aft (m) *</label>
+              <input class="fi" type="number" placeholder="14.8" value="14.8" style="font-family:'JetBrains Mono',monospace">
+            </div>
+            <div class="fg">
+              <label class="fl">Departure Draught Fwd (m) *</label>
+              <input class="fi" type="number" placeholder="13.8" value="13.8" style="font-family:'JetBrains Mono',monospace">
+            </div>
+            <div class="fg">
+              <label class="fl">Departure Draught Aft (m) *</label>
+              <input class="fi" type="number" placeholder="14.2" value="14.2" style="font-family:'JetBrains Mono',monospace">
+            </div>
+            <div class="fg">
+              <label class="fl">Crew on Arrival *</label>
+              <input class="fi" type="number" placeholder="24" value="24" style="font-family:'JetBrains Mono',monospace">
+            </div>
+            <div class="fg">
+              <label class="fl">Passengers on Arrival *</label>
+              <input class="fi" type="number" placeholder="0" value="0" style="font-family:'JetBrains Mono',monospace">
+            </div>
+          </div>
+
+          <!-- Documents -->
+          <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--t1);margin-bottom:14px">Documents</div>
+          <div class="upload-zone" onclick="addFakeFile()">
+            <div class="upload-zone-icon">📎</div>
+            <div class="upload-zone-text">Drag &amp; drop files here, or click to browse</div>
+            <div class="upload-zone-hint">PDF · DOCX · XLSX · JPG · PNG — Max 10 MB per file</div>
+          </div>
+          <div id="file-list" style="margin-top:10px">
+            <div class="file-item">
+              <span class="file-icon">📄</span>
+              <span class="file-name">Crew_List_COSCO_ANTWERP.pdf</span>
+              <span class="file-size">245 KB</span>
+              <button class="act-btn danger" style="margin-left:8px">Remove</button>
+            </div>
+            <div class="file-item">
+              <span class="file-icon">📄</span>
+              <span class="file-name">Cargo_Declaration.pdf</span>
+              <span class="file-size">512 KB</span>
+              <button class="act-btn danger" style="margin-left:8px">Remove</button>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;gap:10px;padding-top:18px;border-top:1px solid var(--b1);margin-top:20px">
+            <button class="btn-secondary" onclick="backToStep1()">← Back to Reservation</button>
+            <div style="display:flex;gap:10px">
+              <button class="btn-secondary" onclick="location.href='dashboard-agent.html'">Save Progress</button>
+              <button class="btn-primary" onclick="submitVisit()">Confirm &amp; Submit →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ STEP 3: SUBMITTED (confirmation screen) ══ -->
+        <div id="s3" style="display:none;text-align:center;padding:40px 0">
+          <div style="font-size:48px;margin-bottom:16px">✅</div>
+          <div style="font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--t1);margin-bottom:8px">Visit Submitted Successfully</div>
+          <div style="font-size:13px;color:var(--t2);margin-bottom:6px">Visit Reference: <span style="font-family:'JetBrains Mono',monospace;color:var(--primary);font-weight:600">VIS-2012</span></div>
+          <div style="font-size:13px;color:var(--t2);margin-bottom:24px">The Harbour Master has been notified and will review your submission.</div>
+          <div style="display:flex;justify-content:center;gap:10px">
+            <a href="dashboard-agent.html" class="btn-secondary">Back to Dashboard</a>
+            <a href="visits-agent.html" class="btn-primary">View My Visits</a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>
+initPage('agent','newvisit','Fatima Zahra Benali','FZ');
+
+let selectedVessel = null;
+const fakeFiles = ['ISPS_Security_Declaration.pdf','General_Declaration.pdf','Maritime_Health_Declaration.pdf'];
+let fakeIdx = 0;
+
+function searchVessel(val) {
+  const r = document.getElementById('vessel-results');
+  if (!val || val.length < 2) { r.style.display = 'none'; return; }
+  r.style.display = '';
+}
+
+function selectVessel(name, imo, type, flag) {
+  selectedVessel = { name, imo, type, flag };
+  document.getElementById('vessel-results').style.display = 'none';
+  document.getElementById('vessel-search').value = '';
+  document.getElementById('inline-vessel-form').style.display = 'none';
+  const badge = document.getElementById('vessel-badge');
+  badge.style.display = 'flex';
+  document.getElementById('vessel-badge-text').innerHTML = `<span class="dot"></span>${name} — ${imo}`;
+  document.getElementById('recap-vessel').textContent = name;
+}
+
+function clearVessel() {
+  selectedVessel = null;
+  document.getElementById('vessel-badge').style.display = 'none';
+  document.getElementById('vessel-search').value = '';
+}
+
+function showInlineForm() {
+  document.getElementById('vessel-results').style.display = 'none';
+  document.getElementById('inline-vessel-form').style.display = 'block';
+}
+
+function saveInlineVessel() {
+  const imo  = document.getElementById('v-imo').value.trim();
+  const name = document.getElementById('v-name').value.trim();
+  const type = document.getElementById('v-type').value;
+  const flag = document.getElementById('v-flag').value;
+  const err  = document.getElementById('iv-err');
+  if (!/^\d{7}$/.test(imo)) { err.textContent = 'IMO must be 7 digits.'; err.style.display = 'block'; return; }
+  if (!name || !type || !flag) { err.textContent = 'Name, Type and Flag are required.'; err.style.display = 'block'; return; }
+  err.style.display = 'none';
+  selectVessel(name, imo, type, flag);
+  document.getElementById('inline-vessel-form').style.display = 'none';
+}
+
+function goStep2() {
+  document.getElementById('s1').style.display = 'none';
+  document.getElementById('s2').style.display = 'block';
+  document.getElementById('sp0').className = 'sp-step done';
+  document.getElementById('sp1').className = 'sp-step current';
+  document.getElementById('page-title').textContent = 'Confirm Visit Request';
+  document.getElementById('page-sub').textContent = 'STEP 2 OF 2 — CONFIRMATION — ADD OPERATIONAL DATA & DOCUMENTS';
+  window.scrollTo(0,0);
+}
+
+function backToStep1() {
+  document.getElementById('s2').style.display = 'none';
+  document.getElementById('s1').style.display = 'block';
+  document.getElementById('sp0').className = 'sp-step done';
+  document.getElementById('sp1').className = 'sp-step current';
+  document.getElementById('page-title').textContent = 'New Visit Request';
+  document.getElementById('page-sub').textContent = 'STEP 1 OF 2 — RESERVATION — MPIS-VIS';
+}
+
+function submitVisit() {
+  document.getElementById('s2').style.display = 'none';
+  document.getElementById('s3').style.display = 'block';
+  document.getElementById('sp1').className = 'sp-step done';
+  document.getElementById('sp2').className = 'sp-step current';
+}
+
+function addFakeFile() {
+  const fname = fakeFiles[fakeIdx % fakeFiles.length]; fakeIdx++;
+  const size = (Math.random()*500+50).toFixed(0) + ' KB';
+  const item = document.createElement('div'); item.className = 'file-item';
+  item.innerHTML = `<span class="file-icon">📄</span><span class="file-name">${fname}</span><span class="file-size">${size}</span><button class="act-btn danger" style="margin-left:8px" onclick="this.closest('.file-item').remove()">Remove</button>`;
+  document.getElementById('file-list').appendChild(item);
+}
+
+// Pre-select COSCO ANTWERP if coming from dashboard
+selectVessel('COSCO ANTWERP','9301443','Container','Hong Kong');
+</script>
+</body>
+</html>

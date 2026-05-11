@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Sign In</title>
+<link rel="stylesheet" href="base.css">
+<style>
+body { overflow: auto !important; }
+.auth-wrapper { min-height: 100vh; }
+.auth-theme { position: fixed; top: 16px; right: 16px; z-index: 10; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 10px; font-weight: 600; color: var(--t2); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; font-family: 'JetBrains Mono', monospace; }
+.form-input { width: 100%; background: var(--s2); border: 1px solid var(--b2); border-radius: 3px; padding: 10px 14px; color: var(--t1); font-family: 'Inter', sans-serif; font-size: 14px; outline: none; transition: border-color .15s; }
+.form-input:focus { border-color: var(--primary); }
+.form-input::placeholder { color: var(--t2); opacity: .6; }
+.resend-row { text-align: center; margin-top: 14px; font-size: 12px; color: var(--t2); }
+.resend-link { color: var(--primary); cursor: pointer; text-decoration: underline; }
+.role-select-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 22px; }
+.role-card {
+  background: var(--s2); border: 1px solid var(--b2); border-radius: 3px; padding: 10px 12px;
+  cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 8px;
+}
+.role-card:hover { border-color: var(--primary); background: rgba(0,184,150,.04); }
+.role-card.selected { border-color: var(--primary); background: rgba(0,184,150,.08); }
+.role-card-icon { font-size: 16px; }
+.role-card-name { font-size: 12px; font-weight: 600; color: var(--t1); }
+.role-card-lbl { font-size: 10px; color: var(--t2); font-family: 'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+
+<button class="theme-btn auth-theme" onclick="toggleTheme()"><span class="theme-icon">☀</span></button>
+
+<div class="auth-wrapper">
+  <!-- LOGIN CARD -->
+  <div id="login-card" class="auth-card">
+    <div class="auth-logo">MPIS</div>
+    <div class="auth-sub">MARITIME PORT INFORMATION SYSTEM</div>
+    <div class="auth-title">Sign In to MPIS</div>
+    <div class="auth-desc">Enter your credentials to access the port management portal.</div>
+
+    <!-- Role selector (demo) -->
+    <div style="margin-bottom:16px">
+      <div class="form-label" style="margin-bottom:8px">Select Role (Demo)</div>
+      <div class="role-select-grid" id="role-grid">
+        <div class="role-card selected" onclick="selectRole(this,'admin')" data-role="admin">
+          <div class="role-card-icon">⚙</div>
+          <div><div class="role-card-name">Administrator</div><div class="role-card-lbl">ADMIN</div></div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'hm')" data-role="hm">
+          <div class="role-card-icon">⚓</div>
+          <div><div class="role-card-name">Harbour Master</div><div class="role-card-lbl">HM</div></div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'agent')" data-role="agent">
+          <div class="role-card-icon">🚢</div>
+          <div><div class="role-card-name">Maritime Agent</div><div class="role-card-lbl">AGENT</div></div>
+        </div>
+        <div class="role-card" onclick="selectRole(this,'sp')" data-role="sp">
+          <div class="role-card-icon">🔧</div>
+          <div><div class="role-card-name">Service Provider</div><div class="role-card-lbl">SP</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email Address</label>
+      <input class="form-input" type="email" value="admin@mpis.port" placeholder="user@mpis.port">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" value="password" placeholder="••••••••">
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:4px" onclick="goMFA()">Sign In to MPIS</button>
+    <div class="auth-footer">
+      <div class="tls-dot"></div>
+      <span class="tls-text">TLS 1.3 Encrypted — All data is encrypted in transit</span>
+    </div>
+  </div>
+
+  <!-- MFA CARD -->
+  <div id="mfa-card" class="auth-card" style="display:none">
+    <div class="auth-logo">MPIS</div>
+    <div class="auth-sub">MARITIME PORT INFORMATION SYSTEM</div>
+    <div class="auth-title">Two-Factor Authentication</div>
+    <div class="auth-desc">Enter the 6-digit code sent to your registered device.</div>
+    <div class="otp-grid">
+      <input class="otp-input" type="text" maxlength="1" oninput="otpAdv(this,0)">
+      <input class="otp-input" type="text" maxlength="1" oninput="otpAdv(this,1)">
+      <input class="otp-input" type="text" maxlength="1" oninput="otpAdv(this,2)">
+      <input class="otp-input" type="text" maxlength="1" oninput="otpAdv(this,3)">
+      <input class="otp-input" type="text" maxlength="1" oninput="otpAdv(this,4)">
+      <input class="otp-input" type="text" maxlength="1" oninput="otpAdv(this,5)">
+    </div>
+    <div class="countdown-bar">
+      <span class="cd-label">Code expires in</span>
+      <span class="cd-val" id="cd-val">04:59</span>
+    </div>
+    <button class="btn-primary" style="width:100%" id="mfa-btn" onclick="goToDashboard()">Verify &amp; Access MPIS</button>
+    <div class="resend-row">Didn't receive a code? <span class="resend-link" onclick="resetCountdown()">Resend</span></div>
+    <div class="auth-footer">
+      <div class="tls-dot"></div>
+      <span class="tls-text">TLS 1.3 Encrypted — All data is encrypted in transit</span>
+    </div>
+  </div>
+</div>
+
+<script src="base.js"></script>
+<script>
+let selectedRole = 'admin';
+const DASHBOARDS = {
+  admin: 'dashboard-admin.html',
+  hm:    'dashboard-hm.html',
+  agent: 'dashboard-agent.html',
+  sp:    'dashboard-sp.html'
+};
+
+function selectRole(card, role) {
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedRole = role;
+}
+
+function goMFA() {
+  document.getElementById('login-card').style.display = 'none';
+  document.getElementById('mfa-card').style.display = 'block';
+  startCountdown();
+  setTimeout(() => document.querySelectorAll('.otp-input')[0].focus(), 100);
+}
+
+function goToDashboard() {
+  location.href = DASHBOARDS[selectedRole] || 'dashboard-admin.html';
+}
+
+// Auto-fill OTP demo after 1s
+setTimeout(() => {
+  const inputs = document.querySelectorAll('.otp-input');
+  if (inputs.length) {
+    '123456'.split('').forEach((d, i) => { if (inputs[i]) inputs[i].value = d; });
+  }
+}, 1200);
+</script>
+</body>
+</html>

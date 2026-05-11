@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Visit Review Workspace</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.review-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--b1); border-radius: 3px; overflow: hidden; margin-bottom: 16px; }
+.rdg-cell { padding: 10px 14px; border-bottom: 1px solid var(--b1); border-right: 1px solid var(--b1); }
+.rdg-cell:nth-child(even) { border-right: none; }
+.rdg-cell:last-child, .rdg-cell:nth-last-child(2) { border-bottom: none; }
+.rdg-label { font-size: 9px; font-weight: 600; color: var(--t2); text-transform: uppercase; letter-spacing: .1em; font-family: 'JetBrains Mono', monospace; margin-bottom: 4px; }
+.rdg-val { font-size: 13px; color: var(--t1); font-family: 'JetBrains Mono', monospace; }
+.doc-reject-area { display: none; background: var(--s2); border: 1px solid var(--red); border-radius: 3px; padding: 10px; margin-top: 8px; }
+.doc-reject-area textarea { width: 100%; background: transparent; border: none; color: var(--t1); font-family: 'Inter', sans-serif; font-size: 12px; outline: none; resize: none; }
+.decision-summary { background: var(--s4); border: 1px solid var(--b1); border-radius: 3px; padding: 14px; margin-bottom: 18px; }
+.ds-row { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--b1); font-size: 12px; }
+.ds-row:last-child { border-bottom: none; }
+.ds-icon { font-size: 14px; flex-shrink: 0; }
+.ds-label { color: var(--t2); flex: 1; }
+.ds-status { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <!-- Page Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <div class="pg-title">Visit Review Workspace</div>
+          <div class="pg-sub">VIS-2011 · COSCO ANTWERP · 9301443 — SUBMITTED BY MAROC AGENTS SARL</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="badge vs-under-review"><span class="dot" style="background:var(--orange)"></span>UNDER REVIEW</span>
+          <a href="visits-hm.html" class="btn-secondary">← Back to Queue</a>
+        </div>
+      </div>
+
+      <!-- Stepper -->
+      <div class="stepper" id="stepper">
+        <div class="step active" onclick="showStep(0,4)">
+          <div class="step-num">Section 01</div>
+          <div class="step-name">Visit</div>
+          <div class="step-status"><span class="badge vs-under-review" style="font-size:9px"><span class="dot" style="background:var(--orange)"></span>PENDING</span></div>
+        </div>
+        <div class="step" onclick="showStep(1,4)">
+          <div class="step-num">Section 02</div>
+          <div class="step-name">Vessel</div>
+          <div class="step-status"><span class="badge vs-under-review" style="font-size:9px"><span class="dot" style="background:var(--orange)"></span>PENDING</span></div>
+        </div>
+        <div class="step" onclick="showStep(2,4)">
+          <div class="step-num">Section 03</div>
+          <div class="step-name">Documents</div>
+          <div class="step-status"><span class="badge bg-red" style="font-size:9px"><span class="dot"></span>1 ISSUE</span></div>
+        </div>
+        <div class="step" onclick="showStep(3,4)">
+          <div class="step-num">Section 04</div>
+          <div class="step-name">Decision</div>
+          <div class="step-status"><span class="badge bg-grey" style="font-size:9px">AWAITING</span></div>
+        </div>
+      </div>
+
+      <!-- TAB 0: VISIT DATA -->
+      <div id="step-sec-0">
+        <div class="review-detail-grid">
+          <div class="rdg-cell"><div class="rdg-label">Visit Reference</div><div class="rdg-val">VIS-2011</div></div>
+          <div class="rdg-cell"><div class="rdg-label">ETA / ETD</div><div class="rdg-val">10 May 08:00 / 12 May 18:00</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Port of Call</div><div class="rdg-val">MACAS — Casablanca</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Purpose of Call</div><div class="rdg-val">Loading</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Previous Port</div><div class="rdg-val">BEANR — Antwerp</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Next Port</div><div class="rdg-val">ESALG — Algeciras</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Arr. Draught Fwd / Aft</div><div class="rdg-val">14.2 m / 14.8 m</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Dep. Draught Fwd / Aft</div><div class="rdg-val">13.8 m / 14.2 m</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Crew on Arrival</div><div class="rdg-val">24</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Passengers on Arrival</div><div class="rdg-val">0</div></div>
+          <div class="rdg-cell" style="grid-column:1/-1"><div class="rdg-label">ISPS Security Level</div><div class="rdg-val">Level 1</div></div>
+        </div>
+        <div style="display:flex;justify-content:flex-end">
+          <button class="btn-primary" onclick="markDone(0);showStep(1,4)">Next: Vessel →</button>
+        </div>
+      </div>
+
+      <!-- TAB 1: VESSEL -->
+      <div id="step-sec-1" style="display:none">
+        <div class="info-banner"><div class="info-dot"></div>Vessel data sourced live from MPIS vessel registry · IMO 9301443</div>
+        <div class="review-detail-grid">
+          <div class="rdg-cell"><div class="rdg-label">IMO Number</div><div class="rdg-val">9301443</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Vessel Name</div><div class="rdg-val">COSCO ANTWERP</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Type</div><div class="rdg-val">Container</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Flag State</div><div class="rdg-val">Hong Kong</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Registered Owner</div><div class="rdg-val">COSCO Shipping Lines</div></div>
+          <div class="rdg-cell"><div class="rdg-label">LOA</div><div class="rdg-val">350.0 m</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Summer Draught</div><div class="rdg-val">15.0 m</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Gross Tonnage</div><div class="rdg-val">115,758 GT</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Net Tonnage</div><div class="rdg-val">69,454 NT</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Beam</div><div class="rdg-val">45.6 m</div></div>
+          <div class="rdg-cell"><div class="rdg-label">MMSI</div><div class="rdg-val">477569600</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Call Sign</div><div class="rdg-val">VRJF4</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Year Built</div><div class="rdg-val">2007</div></div>
+          <div class="rdg-cell"><div class="rdg-label">Classification</div><div class="rdg-val">DNV</div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between">
+          <button class="btn-secondary" onclick="showStep(0,4)">← Visit</button>
+          <button class="btn-primary" onclick="markDone(1);showStep(2,4)">Next: Documents →</button>
+        </div>
+      </div>
+
+      <!-- TAB 2: DOCUMENTS -->
+      <div id="step-sec-2" style="display:none">
+        <div class="panel" style="margin-bottom:16px">
+          <div class="panel-hdr">
+            <div class="panel-title">Submitted Documents</div>
+            <span style="font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace">3 documents · 2 pending · 1 rejected</span>
+          </div>
+          <div class="panel-body">
+            <!-- Doc 1: pending -->
+            <div class="doc-row">
+              <div class="doc-icon">📄</div>
+              <div>
+                <div class="doc-name">Crew_List_COSCO_ANTWERP.pdf</div>
+                <div class="doc-meta">CREW_LIST · 245 KB · 2026-05-08 09:15 UTC</div>
+              </div>
+              <div class="doc-acts">
+                <button class="act-btn edit">View</button>
+                <button class="act-btn ok" onclick="acceptDoc(this)">Accept ✓</button>
+                <button class="act-btn danger" onclick="showReject(this)">✗ Reject</button>
+              </div>
+            </div>
+            <!-- Doc 2: pending -->
+            <div class="doc-row">
+              <div class="doc-icon">📄</div>
+              <div>
+                <div class="doc-name">Cargo_Declaration.pdf</div>
+                <div class="doc-meta">CARGO_DECL · 512 KB · 2026-05-08 09:18 UTC</div>
+              </div>
+              <div class="doc-acts">
+                <button class="act-btn edit">View</button>
+                <button class="act-btn ok" onclick="acceptDoc(this)">Accept ✓</button>
+                <button class="act-btn danger" onclick="showReject(this)">✗ Reject</button>
+              </div>
+            </div>
+            <!-- Doc 3: already rejected (pre-state) -->
+            <div class="doc-row">
+              <div class="doc-icon">📄</div>
+              <div style="flex:1">
+                <div class="doc-name">ISPS_Security_Declaration.pdf</div>
+                <div class="doc-meta">ISPS_DECL · 89 KB · 2026-05-08 09:20 UTC</div>
+                <div style="margin-top:5px">
+                  <span class="badge bg-red" style="font-size:9px"><span class="dot"></span>REJECTED — Missing ISPS Security Level declaration</span>
+                </div>
+              </div>
+              <div class="doc-acts">
+                <button class="act-btn edit">View</button>
+                <button class="act-btn ok" onclick="acceptDoc(this)">Re-accept</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between">
+          <button class="btn-secondary" onclick="showStep(1,4)">← Vessel</button>
+          <button class="btn-primary" onclick="markDone(2);showStep(3,4)">Next: Decision →</button>
+        </div>
+      </div>
+
+      <!-- TAB 3: DECISION -->
+      <div id="step-sec-3" style="display:none">
+        <div class="decision-summary">
+          <div class="ds-row"><span class="ds-icon">📋</span><span class="ds-label">Visit data</span><span class="ds-status" style="color:var(--green)">✓ Reviewed</span></div>
+          <div class="ds-row"><span class="ds-icon">🚢</span><span class="ds-label">Vessel specifications</span><span class="ds-status" style="color:var(--green)">✓ Reviewed</span></div>
+          <div class="ds-row"><span class="ds-icon">📄</span><span class="ds-label">Documents</span><span class="ds-status" style="color:var(--orange)">⚠ 1 rejected · 2 pending</span></div>
+          <div class="ds-row"><span class="ds-icon">⚓</span><span class="ds-label">Services</span><span class="ds-status" style="color:var(--t2)">Will be assigned after approval</span></div>
+        </div>
+
+        <div class="warn-banner">⚠ 1 document has been rejected. You may still approve this visit. The agent will be notified of the rejection reason.</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <button class="btn-primary" style="padding:14px;font-size:14px" onclick="openModal('modal-approve')">✓ Approve Visit</button>
+          <button class="btn-danger" style="padding:14px;font-size:14px" onclick="openModal('modal-reject')">✗ Reject Visit</button>
+        </div>
+
+        <div style="display:flex;justify-content:flex-start">
+          <button class="btn-secondary" onclick="showStep(2,4)">← Documents</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODAL: APPROVE -->
+<div class="modal-overlay" id="modal-approve" onclick="closeModalOutside(event,'modal-approve')">
+  <div class="modal-panel sm">
+    <div style="display:flex;align-items:flex-start;gap:14px">
+      <div class="confirm-icon ci-green">✓</div>
+      <div>
+        <div class="confirm-ttl">Approve Visit VIS-2011?</div>
+        <div class="confirm-desc">COSCO ANTWERP will be approved for port entry on 10 May 08:00. The agent will be notified. Note: 1 document has been rejected.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-approve')">Cancel</button>
+      <button class="btn-primary" onclick="closeModal('modal-approve');location.href='visits-hm.html'">Confirm Approval</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: REJECT -->
+<div class="modal-overlay" id="modal-reject" onclick="closeModalOutside(event,'modal-reject')">
+  <div class="modal-panel sm">
+    <div style="display:flex;align-items:flex-start;gap:14px">
+      <div class="confirm-icon ci-red">✕</div>
+      <div style="flex:1">
+        <div class="confirm-ttl">Reject Visit VIS-2011?</div>
+        <div class="confirm-desc">The agent will be notified with the reason below. A new visit request will be required.</div>
+        <div style="margin-top:14px">
+          <label class="fl" style="color:var(--red)">Rejection Reason *</label>
+          <textarea class="fi" rows="3" placeholder="State the reason for rejection…" style="resize:none;margin-top:6px"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-reject')">Cancel</button>
+      <button class="btn-danger" onclick="closeModal('modal-reject');location.href='visits-hm.html'">Confirm Rejection</button>
+    </div>
+  </div>
+</div>
+
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>
+initPage('hm','visits','Rachid El Amrani','RA');
+
+function markDone(n) {
+  const steps = document.querySelectorAll('.step');
+  if (steps[n]) {
+    steps[n].classList.remove('active');
+    steps[n].classList.add('done');
+    const badge = steps[n].querySelector('.step-status');
+    if (badge) badge.innerHTML = '<span class="badge vs-approved" style="font-size:9px"><span class="dot" style="background:var(--green)"></span>REVIEWED</span>';
+  }
+}
+
+function acceptDoc(btn) {
+  const row = btn.closest('.doc-row');
+  const acts = row.querySelector('.doc-acts');
+  acts.innerHTML = '<span class="badge bg-green" style="font-size:9px"><span class="dot"></span>ACCEPTED</span>';
+}
+
+function showReject(btn) {
+  const row = btn.closest('.doc-row');
+  let area = row.querySelector('.doc-reject-area');
+  if (!area) {
+    area = document.createElement('div');
+    area.className = 'doc-reject-area';
+    area.innerHTML = `<label class="fl" style="color:var(--red);margin-bottom:6px;display:block">Rejection reason (required)</label>
+      <textarea rows="2" placeholder="State the rejection reason…" style="width:100%;background:transparent;border:none;color:var(--t1);font-family:'Inter',sans-serif;font-size:12px;outline:none;resize:none"></textarea>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <button class="btn-danger" style="flex:1;padding:6px" onclick="confirmReject(this)">Confirm Rejection</button>
+        <button class="btn-secondary" style="padding:6px" onclick="this.closest('.doc-reject-area').style.display='none'">Cancel</button>
+      </div>`;
+    row.appendChild(area);
+  }
+  area.style.display = area.style.display === 'block' ? 'none' : 'block';
+}
+
+function confirmReject(btn) {
+  const area = btn.closest('.doc-reject-area');
+  const reason = area.querySelector('textarea').value || 'Missing required information';
+  const row = area.closest('.doc-row');
+  const nameEl = row.querySelector('.doc-name');
+  const metaEl = row.querySelector('.doc-meta');
+  const actsEl = row.querySelector('.doc-acts');
+  actsEl.innerHTML = '<button class="act-btn edit">View</button><button class="act-btn ok" onclick="acceptDoc(this)">Re-accept</button>';
+  let badgeEl = row.querySelector('.rejected-badge');
+  if (!badgeEl) {
+    badgeEl = document.createElement('div');
+    badgeEl.className = 'rejected-badge';
+    badgeEl.style.marginTop = '5px';
+    metaEl.parentNode.appendChild(badgeEl);
+  }
+  badgeEl.innerHTML = `<span class="badge bg-red" style="font-size:9px"><span class="dot"></span>REJECTED — ${reason}</span>`;
+  area.style.display = 'none';
+}
+</script>
+</body>
+</html>

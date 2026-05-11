@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — User Management</title>
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">User Management</div>
+        <div class="pg-sub">MANAGE PORT SYSTEM USERS AND ACCESS CONTROL — MPIS-UAM</div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary)"></div><div class="kpi-label">Total Users</div><div class="kpi-value">14</div><div class="kpi-sub">REGISTERED ACCOUNTS</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--green)"></div><div class="kpi-label">Active</div><div class="kpi-value">9</div><div class="kpi-sub">CURRENTLY ACTIVE</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--orange)"></div><div class="kpi-label">Pending</div><div class="kpi-value">3</div><div class="kpi-sub">AWAITING ACTIVATION</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--red)"></div><div class="kpi-label">Suspended</div><div class="kpi-value">2</div><div class="kpi-sub">ACCESS REVOKED</div></div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" id="tab-users" onclick="switchTab('users')">Users</div>
+        <div class="tab" id="tab-audit" onclick="switchTab('audit')">Audit Log</div>
+      </div>
+
+      <!-- USERS TAB -->
+      <div id="pane-users">
+        <div class="toolbar">
+          <input class="t-search" type="text" placeholder="Search by name, email or ID…" oninput="filterTable('uam-search','users-tbody')" id="uam-search">
+          <select class="t-select" id="role-filter" onchange="applyFilters()">
+            <option value="">All Roles</option>
+            <option>Harbour Master</option><option>Agent</option>
+            <option>Service Provider</option><option>VTS Officer</option><option>Administrator</option>
+          </select>
+          <select class="t-select" id="status-filter" onchange="applyFilters()">
+            <option value="">All Statuses</option>
+            <option>Active</option><option>Pending</option><option>Suspended</option>
+          </select>
+          <button class="add-btn" onclick="openModal('modal-add-user')">+ Add User</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr>
+              <th>ID</th><th>Full Name</th><th>Email</th><th>Role</th><th>Organization</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="users-tbody">
+              <tr class="clickable">
+                <td class="mono">USR-1001</td><td style="font-weight:500">Rachid El Amrani</td>
+                <td class="dim">r.elamrani@hmauth.ma</td>
+                <td><span class="badge bg-teal"><span class="dot"></span>Harbour Master</span></td>
+                <td class="dim">Port Authority Casablanca</td>
+                <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+                <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-user')">Edit</button><button class="act-btn warn" onclick="openModal('modal-suspend')">Suspend</button></div></td>
+              </tr>
+              <tr class="clickable">
+                <td class="mono">USR-1002</td><td style="font-weight:500">Fatima Zahra Benali</td>
+                <td class="dim">fz.benali@maroc-agents.com</td>
+                <td><span class="badge bg-blue"><span class="dot"></span>Agent</span></td>
+                <td class="dim">Maroc Agents SARL</td>
+                <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+                <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-user')">Edit</button><button class="act-btn warn" onclick="openModal('modal-suspend')">Suspend</button></div></td>
+              </tr>
+              <tr class="clickable">
+                <td class="mono">USR-1003</td><td style="font-weight:500">Omar Tazi</td>
+                <td class="dim">o.tazi@atlanticpilot.ma</td>
+                <td><span class="badge bg-orange"><span class="dot"></span>Service Provider</span></td>
+                <td class="dim">Atlantic Pilot Services</td>
+                <td><span class="badge bg-orange"><span class="dot"></span>PENDING</span></td>
+                <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-user')">Edit</button><button class="act-btn warn" onclick="openModal('modal-suspend')">Suspend</button></div></td>
+              </tr>
+              <tr class="clickable">
+                <td class="mono">USR-1004</td><td style="font-weight:500">Nadia Chraibi</td>
+                <td class="dim">n.chraibi@vts-casa.ma</td>
+                <td><span class="badge bg-purple"><span class="dot"></span>VTS Officer</span></td>
+                <td class="dim">VTS Casablanca</td>
+                <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+                <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-user')">Edit</button><button class="act-btn warn" onclick="openModal('modal-suspend')">Suspend</button></div></td>
+              </tr>
+              <tr class="clickable">
+                <td class="mono">USR-1005</td><td style="font-weight:500">Karim Mansouri</td>
+                <td class="dim">k.mansouri@globship.ma</td>
+                <td><span class="badge bg-blue"><span class="dot"></span>Agent</span></td>
+                <td class="dim">GlobShip Agency</td>
+                <td><span class="badge bg-red"><span class="dot"></span>SUSPENDED</span></td>
+                <td><div class="act-row"><button class="act-btn ok">Reactivate</button><button class="act-btn danger" onclick="openModal('modal-delete')">Delete</button></div></td>
+              </tr>
+              <tr class="clickable">
+                <td class="mono">USR-1006</td><td style="font-weight:500">Leila Berrada</td>
+                <td class="dim">l.berrada@mpis.port</td>
+                <td><span class="badge bg-red"><span class="dot"></span>Administrator</span></td>
+                <td class="dim">MPIS System Admin</td>
+                <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+                <td><div class="act-row"><button class="act-btn edit" onclick="openModal('modal-edit-user')">Edit</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+          <span class="results-count">Showing 6 of 14 users</span>
+          <div style="display:flex;gap:6px">
+            <button class="btn-ghost">← Prev</button>
+            <button class="btn-ghost" style="background:var(--s4);color:var(--t1);border-color:var(--primary)">1</button>
+            <button class="btn-ghost">2</button>
+            <button class="btn-ghost">Next →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUDIT TAB -->
+      <div id="pane-audit" style="display:none">
+        <div class="toolbar">
+          <span style="font-size:12px;color:var(--t2)">From</span>
+          <input class="date-inp" type="date" value="2026-05-01">
+          <span style="font-size:12px;color:var(--t2)">to</span>
+          <input class="date-inp" type="date" value="2026-05-10">
+          <select class="t-select">
+            <option value="">All Actions</option>
+            <option>USER_CREATED</option><option>USER_EDITED</option>
+            <option>USER_SUSPENDED</option><option>LOGIN_SUCCESS</option><option>LOGIN_FAILED</option>
+          </select>
+          <button class="btn-secondary">Export CSV</button>
+          <span class="results-count" style="margin-left:auto">8 entries</span>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Timestamp (UTC)</th><th>Action Type</th><th>Performed By</th><th>Target User</th><th>IP Address</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">2026-05-08 09:42:11</td><td><span class="badge bg-green" style="font-size:9px">USER_CREATED</span></td><td>System Admin</td><td>Omar Tazi · o.tazi@atlanticpilot.ma</td><td class="mono">127.0.0.14</td></tr>
+              <tr><td class="mono">2026-05-08 09:31:05</td><td><span class="badge bg-teal" style="font-size:9px">LOGIN_SUCCESS</span></td><td>Rachid El Amrani</td><td>Rachid El Amrani</td><td class="mono">192.168.1.22</td></tr>
+              <tr><td class="mono">2026-05-07 16:18:44</td><td><span class="badge bg-blue" style="font-size:9px">USER_EDITED</span></td><td>System Admin</td><td>Fatima Zahra Benali</td><td class="mono">127.0.0.1</td></tr>
+              <tr><td class="mono">2026-05-07 14:05:33</td><td><span class="badge bg-orange" style="font-size:9px">USER_SUSPENDED</span></td><td>System Admin</td><td>Karim Mansouri</td><td class="mono">127.0.0.1</td></tr>
+              <tr><td class="mono">2026-05-06 11:22:00</td><td><span class="badge bg-red" style="font-size:9px">LOGIN_FAILED</span></td><td>—</td><td>unknown@mpis.port</td><td class="mono">203.45.77.12</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODAL: ADD USER -->
+<div class="modal-overlay" id="modal-add-user" onclick="closeModalOutside(event,'modal-add-user')">
+  <div class="modal-panel">
+    <div class="modal-hdr">
+      <div class="modal-title">Add New User</div>
+      <button class="modal-close" onclick="closeModal('modal-add-user')">×</button>
+    </div>
+    <div class="err-banner" id="dup-email-err" style="display:none">⚠ This email address is already registered.</div>
+    <div class="form-grid">
+      <div class="fg"><label class="fl">First Name *</label><input class="fi" placeholder="First name"></div>
+      <div class="fg"><label class="fl">Last Name *</label><input class="fi" placeholder="Last name"></div>
+      <div class="fg full"><label class="fl">Email Address *</label><input class="fi" type="email" placeholder="user@mpis.port"></div>
+      <div class="fg"><label class="fl">Role *</label>
+        <select class="fi"><option value="">Select Role</option>
+          <option>Harbour Master</option><option>Agent</option>
+          <option>Service Provider</option><option>VTS Officer</option><option>Administrator</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Status</label>
+        <select class="fi"><option>Pending</option><option>Active</option></select>
+      </div>
+      <div class="fg full"><label class="fl">Organization</label><input class="fi" placeholder="Maritime Authority of…"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-add-user')">Cancel</button>
+      <button class="btn-primary" onclick="closeModal('modal-add-user')">Create User</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT USER -->
+<div class="modal-overlay" id="modal-edit-user" onclick="closeModalOutside(event,'modal-edit-user')">
+  <div class="modal-panel">
+    <div class="modal-hdr">
+      <div class="modal-title">Edit User</div>
+      <button class="modal-close" onclick="closeModal('modal-edit-user')">×</button>
+    </div>
+    <div class="form-grid">
+      <div class="fg"><label class="fl">First Name *</label><input class="fi ok" value="Rachid"></div>
+      <div class="fg"><label class="fl">Last Name *</label><input class="fi ok" value="El Amrani"></div>
+      <div class="fg full"><label class="fl">Email Address *</label><input class="fi ok" value="r.elamrani@hmauth.ma"></div>
+      <div class="fg"><label class="fl">Role *</label>
+        <select class="fi"><option selected>Harbour Master</option><option>Agent</option><option>Administrator</option></select>
+      </div>
+      <div class="fg"><label class="fl">Status</label>
+        <select class="fi"><option selected>Active</option><option>Pending</option><option>Suspended</option></select>
+      </div>
+      <div class="fg full"><label class="fl">Organization</label><input class="fi ok" value="Port Authority Casablanca"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-edit-user')">Cancel</button>
+      <button class="btn-primary" onclick="closeModal('modal-edit-user')">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SUSPEND -->
+<div class="modal-overlay" id="modal-suspend" onclick="closeModalOutside(event,'modal-suspend')">
+  <div class="modal-panel sm">
+    <div style="display:flex;align-items:flex-start;gap:14px">
+      <div class="confirm-icon ci-orange">⊘</div>
+      <div>
+        <div class="confirm-ttl">Suspend User Account?</div>
+        <div class="confirm-desc">Rachid El Amrani will lose access to MPIS immediately. This action will not delete their data.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-suspend')">Cancel</button>
+      <button class="btn-warn" onclick="closeModal('modal-suspend')">Suspend Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DELETE -->
+<div class="modal-overlay" id="modal-delete" onclick="closeModalOutside(event,'modal-delete')">
+  <div class="modal-panel sm">
+    <div style="display:flex;align-items:flex-start;gap:14px">
+      <div class="confirm-icon ci-red">✕</div>
+      <div style="flex:1">
+        <div class="confirm-ttl">Permanently Delete User?</div>
+        <div class="confirm-desc"><strong>Karim Mansouri</strong>'s account will be permanently removed. Audit records will be preserved.</div>
+        <div style="margin-top:14px">
+          <label class="fl" style="color:var(--red)">Type DELETE to confirm</label>
+          <input class="del-input" id="del-inp" placeholder="DELETE" oninput="document.getElementById('del-btn').disabled=this.value!=='DELETE'">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-delete')">Cancel</button>
+      <button class="btn-danger" id="del-btn" disabled onclick="closeModal('modal-delete')">Delete Permanently</button>
+    </div>
+  </div>
+</div>
+
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>
+initPage('admin','users','System Admin','SA');
+
+function switchTab(tab) {
+  ['users','audit'].forEach(t => {
+    document.getElementById('pane-'+t).style.display = t===tab ? 'block' : 'none';
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+  });
+}
+function applyFilters() {
+  const search = document.getElementById('uam-search').value.toLowerCase();
+  const role   = document.getElementById('role-filter').value.toLowerCase();
+  const status = document.getElementById('status-filter').value.toLowerCase();
+  document.querySelectorAll('#users-tbody tr').forEach(row => {
+    const txt = row.textContent.toLowerCase();
+    const show = (!search||txt.includes(search)) && (!role||txt.includes(role)) && (!status||txt.includes(status));
+    row.style.display = show ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

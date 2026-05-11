@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Agent Dashboard</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.visit-card {
+  background: var(--s3); border: 1px solid var(--b1); border-radius: 3px;
+  padding: 13px 16px; margin-bottom: 10px; transition: border-color .15s;
+}
+.visit-card:hover { border-color: var(--b2); }
+.vc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.vc-ref { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--primary); }
+.vc-vessel { font-size: 13px; font-weight: 600; color: var(--t1); flex: 1; }
+.vc-detail { font-size: 11px; color: var(--t2); font-family: 'JetBrains Mono', monospace; margin-bottom: 8px; }
+.vc-footer { display: flex; align-items: center; justify-content: space-between; }
+.action-item { background: var(--s4); border: 1px solid var(--b1); border-radius: 3px; padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 10px; }
+.ai-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.ai-title { font-size: 13px; font-weight: 500; color: var(--t1); margin-bottom: 3px; }
+.ai-sub { font-size: 11px; color: var(--t2); font-family: 'JetBrains Mono', monospace; }
+.ai-cta { margin-left: auto; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">Agent Dashboard</div>
+        <div class="pg-sub">MAROC AGENTS SARL — MY ACTIVE VISITS AND TASKS</div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--blue)"></div>
+          <div class="kpi-label">My Visits</div>
+          <div class="kpi-value">8</div>
+          <div class="kpi-sub">TOTAL ACTIVE VISITS</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--orange)"></div>
+          <div class="kpi-label">Awaiting Confirmation</div>
+          <div class="kpi-value" style="color:var(--orange)">2</div>
+          <div class="kpi-sub">DRAFT / PENDING CONFIRM.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--green)"></div>
+          <div class="kpi-label">Approved Visits</div>
+          <div class="kpi-value">3</div>
+          <div class="kpi-sub">READY FOR SERVICES</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-accent" style="background:var(--red)"></div>
+          <div class="kpi-label">Rejected</div>
+          <div class="kpi-value">1</div>
+          <div class="kpi-sub">THIS MONTH</div>
+        </div>
+      </div>
+
+      <div class="panels-60-40">
+        <!-- My Visits -->
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--t1)">My Visits</div>
+            <select class="t-select" style="font-size:11px">
+              <option>All States</option><option>Draft</option><option>Submitted</option>
+              <option>Approved</option><option>Rejected</option>
+            </select>
+          </div>
+
+          <div class="visit-card">
+            <div class="vc-header">
+              <span class="vc-ref">VIS-2011</span>
+              <span class="vc-vessel">COSCO ANTWERP</span>
+              <span class="badge vs-draft">DRAFT</span>
+            </div>
+            <div class="vc-detail">ETA: 15 May 2026 · Berth TBD · Loading</div>
+            <div class="vc-footer">
+              <span style="font-size:11px;color:var(--orange);font-family:'JetBrains Mono',monospace">⚑ Confirm before 12 May 2026</span>
+              <a class="act-btn primary-act" href="visit-confirm.html">Continue →</a>
+            </div>
+          </div>
+
+          <div class="visit-card">
+            <div class="vc-header">
+              <span class="vc-ref">VIS-2010</span>
+              <span class="vc-vessel">EMMA MAERSK</span>
+              <span class="badge vs-approved">APPROVED</span>
+            </div>
+            <div class="vc-detail">ETA: 10 May 2026 · Berth TBD · Repair</div>
+            <div class="vc-footer">
+              <span style="font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace">✓ Approved — request services</span>
+              <a class="act-btn primary-act" href="visit-confirm.html">Request Services →</a>
+            </div>
+          </div>
+
+          <div class="visit-card">
+            <div class="vc-header">
+              <span class="vc-ref">VIS-2009</span>
+              <span class="vc-vessel">MAERSK TANGIER</span>
+              <span class="badge vs-submitted">SUBMITTED</span>
+            </div>
+            <div class="vc-detail">ETA: 11 May 2026 · Berth TBD · Bunkering</div>
+            <div class="vc-footer">
+              <span style="font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace">Awaiting HM review</span>
+              <button class="act-btn">View</button>
+            </div>
+          </div>
+
+          <div class="visit-card" style="border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.02)">
+            <div class="vc-header">
+              <span class="vc-ref">VIS-2005</span>
+              <span class="vc-vessel">MSC LUCIA</span>
+              <span class="badge vs-rejected">REJECTED</span>
+            </div>
+            <div class="vc-detail">ETA: 05 May 2026 · Bunkering</div>
+            <div class="vc-footer">
+              <span style="font-size:11px;color:var(--red);font-family:'JetBrains Mono',monospace">Missing ISPS declaration — create new visit</span>
+              <button class="act-btn danger">New Visit</button>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <a href="visits-agent.html" style="font-size:12px;color:var(--primary);text-decoration:none;font-family:'JetBrains Mono',monospace">View all 8 visits →</a>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <!-- Actions Required -->
+          <div class="panel">
+            <div class="panel-hdr">
+              <div class="panel-title">Actions Required</div>
+              <span class="badge bg-orange"><span class="dot"></span>2</span>
+            </div>
+            <div class="panel-body">
+              <div class="action-item">
+                <div class="ai-icon">⚑</div>
+                <div style="flex:1">
+                  <div class="ai-title">VIS-2011 — Confirm Before 12 May</div>
+                  <div class="ai-sub">COSCO ANTWERP · Deadline in 2 days</div>
+                </div>
+                <div class="ai-cta"><a class="act-btn primary-act" href="visit-confirm.html">Confirm Now</a></div>
+              </div>
+              <div class="action-item">
+                <div class="ai-icon">✅</div>
+                <div style="flex:1">
+                  <div class="ai-title">VIS-2010 — Request Services</div>
+                  <div class="ai-sub">EMMA MAERSK · Visit approved by HM</div>
+                </div>
+                <div class="ai-cta"><a class="act-btn primary-act" href="visit-confirm.html">Request →</a></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Start -->
+          <div class="panel">
+            <div class="panel-hdr"><div class="panel-title">Quick Start</div></div>
+            <div class="panel-body">
+              <a href="visit-new.html" class="btn-primary" style="display:block;text-align:center;text-decoration:none;padding:12px;font-size:14px">+ New Visit Request</a>
+              <div style="margin-top:10px;font-size:11px;color:var(--t2);text-align:center;font-family:'JetBrains Mono',monospace">Select vessel · Set ETA/ETD · Save as draft</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>initPage('agent','dashboard','Fatima Zahra Benali','FZ');</script>
+</body>
+</html>

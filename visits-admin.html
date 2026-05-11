@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Visit Management (Admin)</title>
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">Visit Management</div>
+        <div class="pg-sub">ALL PORT VISITS — ADMINISTRATOR VIEW — MPIS-VIS</div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary)"></div><div class="kpi-label">Total Visits</div><div class="kpi-value">12</div><div class="kpi-sub">ALL STATES</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--orange)"></div><div class="kpi-label">Pending Review</div><div class="kpi-value" style="color:var(--orange)">3</div><div class="kpi-sub">SUBMITTED TO HM</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div><div class="kpi-label">In Progress</div><div class="kpi-value">2</div><div class="kpi-sub">ACTIVE OPERATIONS</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--green)"></div><div class="kpi-label">Completed</div><div class="kpi-value">4</div><div class="kpi-sub">THIS MONTH</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:200px 1fr;gap:16px">
+        <div>
+          <div style="font-size:9px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.12em;font-family:'JetBrains Mono',monospace;padding:0 4px;margin-bottom:10px">Filter by State</div>
+          <div class="state-filter">
+            <div class="sf-item active" onclick="filterByState('all',this)">All Visits <span class="sf-count">12</span></div>
+            <div class="sf-item" onclick="filterByState('draft',this)">Draft <span class="sf-count">2</span></div>
+            <div class="sf-item" onclick="filterByState('submitted',this)">Submitted <span class="sf-count" style="background:rgba(59,130,246,.15);color:var(--blue)">3</span></div>
+            <div class="sf-item" onclick="filterByState('under-review',this)">Under Review <span class="sf-count" style="background:rgba(245,158,11,.15);color:var(--orange)">1</span></div>
+            <div class="sf-item" onclick="filterByState('approved',this)">Approved <span class="sf-count" style="background:rgba(34,197,94,.12);color:var(--green)">3</span></div>
+            <div class="sf-item" onclick="filterByState('svc-req',this)">Services Req. <span class="sf-count" style="background:rgba(0,184,150,.12);color:var(--teal)">2</span></div>
+            <div class="sf-item" onclick="filterByState('completed',this)">Completed <span class="sf-count" style="background:rgba(34,197,94,.12);color:var(--green)">1</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="toolbar">
+            <input class="t-search" type="text" placeholder="Search vessel, ref, or agent…" oninput="searchVisits(this.value)">
+            <select class="t-select" id="agent-filter" onchange="applyFilters()">
+              <option value="">All Agents</option>
+              <option>Maroc Agents SARL</option><option>GlobShip Agency</option><option>Atlantic Agency</option>
+            </select>
+            <input class="date-inp" type="date" value="2026-05-01">
+            <input class="date-inp" type="date" value="2026-05-31">
+            <span class="results-count" id="vcount">12 visits</span>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Visit Ref</th><th>Vessel</th><th>IMO</th><th>Agent</th><th>ETA</th><th>State</th><th>Actions</th></tr></thead>
+              <tbody id="visits-tbody">
+                <tr class="clickable" data-state="draft"><td class="mono">VIS-2011</td><td style="font-weight:600">COSCO ANTWERP</td><td class="mono">9301443</td><td class="dim">Maroc Agents</td><td class="mono">15 May 08:00</td><td><span class="badge vs-draft">DRAFT</span></td><td><div class="act-row"><button class="act-btn">View</button></div></td></tr>
+                <tr class="clickable" data-state="submitted"><td class="mono">VIS-2009</td><td style="font-weight:600">MSC GULSUN</td><td class="mono">9706313</td><td class="dim">GlobShip</td><td class="mono">11 May 14:00</td><td><span class="badge vs-submitted"><span class="dot" style="background:var(--blue)"></span>SUBMITTED</span></td><td><div class="act-row"><a class="act-btn primary-act" href="visit-review.html">Review →</a></div></td></tr>
+                <tr class="clickable" data-state="submitted"><td class="mono">VIS-2007</td><td style="font-weight:600">EVER ACE</td><td class="mono">9839430</td><td class="dim">Atlantic Agency</td><td class="mono">09 May 10:00</td><td><span class="badge vs-submitted"><span class="dot" style="background:var(--blue)"></span>SUBMITTED</span></td><td><div class="act-row"><a class="act-btn primary-act" href="visit-review.html">Review →</a></div></td></tr>
+                <tr class="clickable" data-state="under-review"><td class="mono">VIS-2006</td><td style="font-weight:600">HMM ALGECIRAS</td><td class="mono">9863297</td><td class="dim">Maroc Agents</td><td class="mono">07 May 14:00</td><td><span class="badge vs-under-review"><span class="dot" style="background:var(--orange)"></span>UNDER REVIEW</span></td><td><div class="act-row"><button class="act-btn">View</button></div></td></tr>
+                <tr class="clickable" data-state="approved"><td class="mono">VIS-2010</td><td style="font-weight:600">EMMA MAERSK</td><td class="mono">9321483</td><td class="dim">Maroc Agents</td><td class="mono">10 May 08:00</td><td><span class="badge vs-approved"><span class="dot" style="background:var(--green)"></span>APPROVED</span></td><td><div class="act-row"><button class="act-btn">View</button></div></td></tr>
+                <tr class="clickable" data-state="svc-req"><td class="mono">VIS-2008</td><td style="font-weight:600">MAERSK TANGIER</td><td class="mono">9301112</td><td class="dim">Maroc Agents</td><td class="mono">08 May 06:00</td><td><span class="badge vs-svc-req"><span class="dot" style="background:var(--teal)"></span>SERVICES REQ.</span></td><td><div class="act-row"><button class="act-btn">View</button></div></td></tr>
+                <tr class="clickable" data-state="completed"><td class="mono">VIS-1998</td><td style="font-weight:600">CMA CGM MARCO POLO</td><td class="mono">9454448</td><td class="dim">Atlantic Agency</td><td class="mono">02 May 08:00</td><td><span class="badge vs-completed"><span class="dot" style="background:var(--green)"></span>COMPLETED</span></td><td><div class="act-row"><button class="act-btn">View</button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+<script src="base.js"></script><script src="shell.js"></script>
+<script>
+initPage('admin','visits','System Admin','SA');
+function filterByState(state,el){
+  document.querySelectorAll('.sf-item').forEach(i=>i.classList.remove('active'));
+  if(el)el.classList.add('active');
+  let n=0;
+  document.querySelectorAll('#visits-tbody tr').forEach(r=>{
+    const show=state==='all'||r.dataset.state===state;
+    r.style.display=show?'':'none'; if(show)n++;
+  });
+  document.getElementById('vcount').textContent=n+' visit'+(n!==1?'s':'');
+}
+function searchVisits(val){
+  const v=val.toLowerCase(); let n=0;
+  document.querySelectorAll('#visits-tbody tr').forEach(r=>{
+    const show=!v||r.textContent.toLowerCase().includes(v);
+    r.style.display=show?'':'none'; if(show)n++;
+  });
+  document.getElementById('vcount').textContent=n+' visit'+(n!==1?'s':'');
+}
+function applyFilters(){
+  const ag=document.getElementById('agent-filter').value.toLowerCase();
+  let n=0;
+  document.querySelectorAll('#visits-tbody tr').forEach(r=>{
+    const show=!ag||r.textContent.toLowerCase().includes(ag);
+    r.style.display=show?'':'none'; if(show)n++;
+  });
+  document.getElementById('vcount').textContent=n+' visit'+(n!==1?'s':'');
+}
+</script>
+</body></html>

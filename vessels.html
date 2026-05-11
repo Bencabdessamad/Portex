@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Vessel Database</title>
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">Vessel Database</div>
+        <div class="pg-sub">IMO-COMPLIANT VESSEL REGISTRY — SINGLE SOURCE OF TRUTH — MPIS-VSM</div>
+      </div>
+
+      <div class="toolbar">
+        <input class="t-search" type="text" placeholder="Search by IMO, name or owner…" oninput="filterVessels(this.value)" id="vsd-search">
+        <select class="t-select" id="vf-type" onchange="filterVessels()">
+          <option value="">All Types</option>
+          <option>Bulk Carrier</option><option>Container</option><option>Tanker</option>
+          <option>General Cargo</option><option>RoRo</option><option>LNG Carrier</option>
+        </select>
+        <select class="t-select" id="vf-flag" onchange="filterVessels()">
+          <option value="">All Flags</option>
+          <option>Panama</option><option>Liberia</option><option>Marshall Islands</option>
+          <option>Bahamas</option><option>Malta</option><option>Singapore</option>
+          <option>Hong Kong</option><option>Denmark</option>
+        </select>
+        <select class="t-select" id="vf-status" onchange="filterVessels()">
+          <option value="">All Statuses</option>
+          <option>Active</option><option>In Port</option><option>Deactivated</option>
+        </select>
+        <span class="results-count" id="vsd-count" style="display:none"></span>
+        <button class="btn-secondary" onclick="location.href='visit-new.html'">New Visit</button>
+        <button class="add-btn" onclick="openModal('modal-add-vessel')">+ Add Vessel</button>
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th class="sortable sort-asc">IMO No.</th>
+            <th class="sortable">Vessel Name</th>
+            <th>Type</th><th>Flag</th>
+            <th class="sortable">LOA (m)</th>
+            <th>Draught (m)</th>
+            <th class="sortable">GT</th>
+            <th>Owner</th>
+            <th class="sortable">Status</th>
+            <th>Actions</th>
+          </tr></thead>
+          <tbody id="vessels-tbody">
+            <tr class="clickable" onclick="openVesselPanel('9321483','EMMA MAERSK','Container','Singapore','A.P. Moller - Maersk','397.71','13.4','171,542','103,276','56.55','Active','563254800','9VCY3','2006','Lloyd\'s Register','174,239')">
+              <td class="mono">9321483</td><td style="font-weight:600">EMMA MAERSK</td>
+              <td class="dim">Container</td><td style="font-size:12px">Singapore</td>
+              <td class="mono">397.71</td><td class="mono">13.4</td><td class="mono">171,542</td>
+              <td class="dim">A.P. Moller - Maersk</td>
+              <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+              <td onclick="event.stopPropagation()"><div class="act-row"><button class="act-btn" onclick="openVesselPanel('9321483','EMMA MAERSK','Container','Singapore','A.P. Moller - Maersk','397.71','13.4','171,542','103,276','56.55','Active','563254800','9VCY3','2006','Lloyd\'s Register','174,239')">View</button><button class="act-btn edit" onclick="openModal('modal-edit-vessel')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable" onclick="openVesselPanel('9301112','MAERSK TANGIER','Container','Denmark','A.P. Moller - Maersk','367.30','15.0','194,849','116,909','51.2','In Port','219000345','OXMT2','2015','Lloyd\'s Register','186,000')">
+              <td class="mono">9301112</td><td style="font-weight:600">MAERSK TANGIER</td>
+              <td class="dim">Container</td><td style="font-size:12px">Denmark</td>
+              <td class="mono">367.30</td><td class="mono">15.0</td><td class="mono">194,849</td>
+              <td class="dim">A.P. Moller - Maersk</td>
+              <td><span class="badge bg-teal"><span class="dot"></span>IN PORT</span></td>
+              <td onclick="event.stopPropagation()"><div class="act-row"><button class="act-btn">View</button><button class="act-btn edit" onclick="openModal('modal-edit-vessel')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable" onclick="openVesselPanel('9706313','MSC GULSUN','Container','Panama','Mediterranean Shipping Co','399.99','16.5','232,527','139,516','61.5','Active','372444000','3FPF9','2019','Lloyd\'s Register','225,816')">
+              <td class="mono">9706313</td><td style="font-weight:600">MSC GULSUN</td>
+              <td class="dim">Container</td><td style="font-size:12px">Panama</td>
+              <td class="mono">399.99</td><td class="mono">16.5</td><td class="mono">232,527</td>
+              <td class="dim">Mediterranean Shipping Co</td>
+              <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+              <td onclick="event.stopPropagation()"><div class="act-row"><button class="act-btn">View</button><button class="act-btn edit" onclick="openModal('modal-edit-vessel')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable" onclick="openVesselPanel('9301443','COSCO ANTWERP','Container','Hong Kong','COSCO Shipping Lines','350.0','15.0','115,758','69,454','45.6','In Port','477569600','VRJF4','2007','DNV','114,000')">
+              <td class="mono">9301443</td><td style="font-weight:600">COSCO ANTWERP</td>
+              <td class="dim">Container</td><td style="font-size:12px">Hong Kong</td>
+              <td class="mono">350.0</td><td class="mono">15.0</td><td class="mono">115,758</td>
+              <td class="dim">COSCO Shipping Lines</td>
+              <td><span class="badge bg-teal"><span class="dot"></span>IN PORT</span></td>
+              <td onclick="event.stopPropagation()"><div class="act-row"><button class="act-btn">View</button><button class="act-btn edit" onclick="openModal('modal-edit-vessel')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable" onclick="openVesselPanel('9387425','ATLANTIC NAVIGATOR II','Bulk Carrier','Marshall Islands','Atlantic Bulk Carriers','225.0','14.2','43,545','26,127','32.26','Active','538004687','V7YN4','2013','Lloyd\'s Register','82,000')">
+              <td class="mono">9387425</td><td style="font-weight:600">ATLANTIC NAVIGATOR II</td>
+              <td class="dim">Bulk Carrier</td><td style="font-size:12px">Marshall Islands</td>
+              <td class="mono">225.0</td><td class="mono">14.2</td><td class="mono">43,545</td>
+              <td class="dim">Atlantic Bulk Carriers</td>
+              <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+              <td onclick="event.stopPropagation()"><div class="act-row"><button class="act-btn">View</button><button class="act-btn edit" onclick="openModal('modal-edit-vessel')">Edit</button></div></td>
+            </tr>
+            <tr class="clickable" style="opacity:.65">
+              <td class="mono">9999001</td><td style="font-weight:600">MAERSK KESTREL</td>
+              <td class="dim">Container</td><td style="font-size:12px">Liberia</td>
+              <td class="mono">234.0</td><td class="mono">11.8</td><td class="mono">48,200</td>
+              <td class="dim">A.P. Moller - Maersk</td>
+              <td><span class="badge bg-red"><span class="dot"></span>DEACTIVATED</span></td>
+              <td><div class="act-row"><button class="act-btn">View</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px"><span class="results-count">Showing 6 of 10 vessels</span></div>
+    </main>
+  </div>
+</div>
+
+<!-- VESSEL SIDE PANEL -->
+<div class="side-panel" id="vessel-panel">
+  <div class="sp-hdr">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="sp-title" id="vp-name">—</div>
+      <span id="vp-badge"></span>
+    </div>
+    <button class="sp-close" onclick="closePanel('vessel-panel')">×</button>
+  </div>
+  <div class="sp-body">
+    <div class="sp-sect">
+      <div class="sp-sect-lbl">Technical Specifications</div>
+      <div class="sp-field"><span class="sp-key">IMO</span><span class="sp-val" id="vp-imo">—</span></div>
+      <div class="sp-field"><span class="sp-key">Type</span><span class="sp-val" id="vp-type">—</span></div>
+      <div class="sp-field"><span class="sp-key">Flag</span><span class="sp-val" id="vp-flag">—</span></div>
+      <div class="sp-field"><span class="sp-key">Owner</span><span class="sp-val" id="vp-owner" style="font-size:11px;max-width:210px">—</span></div>
+      <div class="sp-field"><span class="sp-key">LOA</span><span class="sp-val" id="vp-loa">—</span></div>
+      <div class="sp-field"><span class="sp-key">Summer Draught</span><span class="sp-val" id="vp-draught">—</span></div>
+      <div class="sp-field"><span class="sp-key">Gross Tonnage</span><span class="sp-val" id="vp-gt">—</span></div>
+      <div class="sp-field"><span class="sp-key">Net Tonnage</span><span class="sp-val" id="vp-nt">—</span></div>
+      <div class="sp-field"><span class="sp-key">Beam</span><span class="sp-val" id="vp-beam">—</span></div>
+    </div>
+    <div class="sp-sect">
+      <div class="sp-sect-lbl">Registry Information</div>
+      <div class="sp-field"><span class="sp-key">MMSI</span><span class="sp-val" id="vp-mmsi">—</span></div>
+      <div class="sp-field"><span class="sp-key">Call Sign</span><span class="sp-val" id="vp-cs">—</span></div>
+      <div class="sp-field"><span class="sp-key">Year Built</span><span class="sp-val" id="vp-built">—</span></div>
+      <div class="sp-field"><span class="sp-key">Classification</span><span class="sp-val" id="vp-class">—</span></div>
+      <div class="sp-field"><span class="sp-key">DWT</span><span class="sp-val" id="vp-dwt">—</span></div>
+    </div>
+    <div class="sp-sect">
+      <div class="sp-sect-lbl">Recent Visits</div>
+      <table style="width:100%;border-collapse:collapse" id="vp-visits">
+        <thead><tr>
+          <th style="font-size:9px;color:var(--t2);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;padding:5px 7px;border-bottom:1px solid var(--b1);text-align:left">Visit ID</th>
+          <th style="font-size:9px;color:var(--t2);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;padding:5px 7px;border-bottom:1px solid var(--b1);text-align:left">Date</th>
+          <th style="font-size:9px;color:var(--t2);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;padding:5px 7px;border-bottom:1px solid var(--b1);text-align:left">Berth</th>
+          <th style="font-size:9px;color:var(--t2);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.1em;padding:5px 7px;border-bottom:1px solid var(--b1);text-align:left">Status</th>
+        </tr></thead>
+        <tbody id="vp-visits-body"></tbody>
+      </table>
+    </div>
+    <div id="vp-llr" style="margin-bottom:12px;display:none">
+      <div class="llr-label"><div class="llr-dot"></div>Source: Lloyd's Register — <span id="vp-llr-date">—</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <button class="btn-warn" id="vp-deact-btn" onclick="openModal('modal-deactivate')" style="width:100%;padding:9px;font-size:12px">Deactivate Vessel</button>
+      <button class="act-btn edit" onclick="openModal('modal-edit-vessel')" style="padding:9px;font-size:12px;width:100%;justify-content:center">Edit Vessel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD VESSEL -->
+<div class="modal-overlay" id="modal-add-vessel" onclick="closeModalOutside(event,'modal-add-vessel')">
+  <div class="modal-panel lg">
+    <div class="modal-hdr"><div class="modal-title">Register Vessel</div><button class="modal-close" onclick="closeModal('modal-add-vessel')">×</button></div>
+    <div class="form-grid">
+      <div class="fg full">
+        <label class="fl">IMO Number *</label>
+        <div class="imo-row">
+          <div style="flex:1"><input class="fi" id="v-imo" placeholder="7-digit IMO…" maxlength="7" style="font-family:'JetBrains Mono',monospace"></div>
+          <button class="fetch-btn" id="fetch-btn" onclick="simulateFetch('v-imo')">Fetch from Lloyd's Register</button>
+        </div>
+        <div class="fi-err" id="err-vimo" style="display:none">IMO must be exactly 7 numeric digits.</div>
+        <div class="llr-label" id="llr-label" style="display:none"><div class="llr-dot"></div>Source: Lloyd's Register — <span id="llr-date"></span></div>
+      </div>
+      <div class="fg"><label class="fl">Vessel Name *</label><input class="fi" id="v-name" placeholder="MV ATLANTIC STAR"></div>
+      <div class="fg"><label class="fl">Vessel Type *</label>
+        <select class="fi" id="v-type"><option value="">Select Type</option>
+          <option>Bulk Carrier</option><option>Container</option><option>Tanker</option>
+          <option>General Cargo</option><option>RoRo</option><option>LNG Carrier</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Flag State *</label>
+        <select class="fi" id="v-flag"><option value="">Select Flag</option>
+          <option>Panama</option><option>Liberia</option><option>Marshall Islands</option>
+          <option>Malta</option><option>Cyprus</option><option>Singapore</option>
+          <option>Hong Kong</option><option>Denmark</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Registered Owner *</label><input class="fi" id="v-owner" placeholder="Oceanic Shipping Ltd."></div>
+      <div class="fg"><label class="fl">LOA (m) *</label><input class="fi" id="v-loa" type="number" placeholder="225.0" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Summer Draught (m) *</label><input class="fi" id="v-draught" type="number" placeholder="12.5" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Gross Tonnage (GT) *</label><input class="fi" id="v-gt" type="number" placeholder="45000" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Net Tonnage (NT) *</label><input class="fi" id="v-nt" type="number" placeholder="27000" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Beam (m) *</label><input class="fi" id="v-beam" type="number" placeholder="32.0" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Status</label>
+        <select class="fi"><option>Active</option><option>Under Review</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-add-vessel')">Cancel</button>
+      <button class="btn-primary" onclick="closeModal('modal-add-vessel')">Register Vessel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT VESSEL -->
+<div class="modal-overlay" id="modal-edit-vessel" onclick="closeModalOutside(event,'modal-edit-vessel')">
+  <div class="modal-panel lg">
+    <div class="modal-hdr"><div class="modal-title">Edit Vessel</div><button class="modal-close" onclick="closeModal('modal-edit-vessel')">×</button></div>
+    <div class="form-grid">
+      <div class="fg full">
+        <label class="fl">IMO Number</label>
+        <div style="position:relative">
+          <input class="fi" value="9321483" readonly style="font-family:'JetBrains Mono',monospace;opacity:.55;cursor:not-allowed" title="IMO number cannot be modified after creation.">
+          <div style="margin-top:3px;font-size:10px;color:var(--t2);font-family:'JetBrains Mono',monospace">⚠ IMO number cannot be modified after creation</div>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Vessel Name *</label><input class="fi ok" value="EMMA MAERSK"></div>
+      <div class="fg"><label class="fl">Vessel Type *</label><select class="fi ok"><option selected>Container</option></select></div>
+      <div class="fg"><label class="fl">Flag State *</label><select class="fi ok"><option selected>Singapore</option></select></div>
+      <div class="fg"><label class="fl">Owner *</label><input class="fi ok" value="A.P. Moller - Maersk"></div>
+      <div class="fg"><label class="fl">LOA (m) *</label><input class="fi ok" value="397.71" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Summer Draught (m) *</label><input class="fi ok" value="13.4" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Gross Tonnage *</label><input class="fi ok" value="171542" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Net Tonnage *</label><input class="fi ok" value="103276" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Beam (m) *</label><input class="fi ok" value="56.55" style="font-family:'JetBrains Mono',monospace"></div>
+      <div class="fg"><label class="fl">Status</label><select class="fi"><option>Active</option><option>In Port</option></select></div>
+    </div>
+    <div class="llr-label" style="margin-top:8px"><div class="llr-dot"></div>Source: Lloyd's Register — 2026-03-01</div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-edit-vessel')">Cancel</button>
+      <button class="btn-primary" onclick="closeModal('modal-edit-vessel')">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: DEACTIVATE -->
+<div class="modal-overlay" id="modal-deactivate" onclick="closeModalOutside(event,'modal-deactivate')">
+  <div class="modal-panel sm">
+    <div style="display:flex;align-items:flex-start;gap:14px">
+      <div class="confirm-icon ci-orange">⊘</div>
+      <div>
+        <div class="confirm-ttl">Deactivate Vessel?</div>
+        <div class="confirm-desc" id="deact-desc">This vessel will be excluded from active operations. All historical data will be preserved.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-deactivate')">Cancel</button>
+      <button class="btn-warn" onclick="closeModal('modal-deactivate');closePanel('vessel-panel')">Deactivate</button>
+    </div>
+  </div>
+</div>
+
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>
+// Detect role from URL param or localStorage (default admin)
+const role = new URLSearchParams(location.search).get('role') || localStorage.getItem('mpis-role') || 'admin';
+const userMap = { admin:['System Admin','SA'], hm:['Rachid El Amrani','RA'], agent:['Fatima Zahra Benali','FZ'], sp:['Omar Tazi','OT'] };
+const [uname, uinit] = userMap[role] || userMap.admin;
+initPage(role, 'vessels', uname, uinit);
+
+const VISITS = {
+  '9301443':[{id:'VIS-2011',date:'2026-05-10',berth:'Berth 2',s:'vs-submitted bg-blue'}],
+  '9301112':[{id:'VIS-2010',date:'2026-05-08',berth:'Berth 1',s:'vs-in-progress bg-teal'},{id:'VIS-1995',date:'2026-03-12',berth:'Berth 2',s:'vs-completed bg-green'}],
+  '9321483':[{id:'VIS-1980',date:'2026-01-22',berth:'Berth 3',s:'vs-completed bg-green'},{id:'VIS-1850',date:'2025-09-14',berth:'Berth 1',s:'vs-completed bg-green'}],
+  '9706313':[{id:'VIS-2000',date:'2026-04-10',berth:'Berth 4',s:'vs-completed bg-green'}],
+};
+const STATUS_MAP = {'Active':'bg-green','In Port':'bg-teal','Deactivated':'bg-red','Under Review':'bg-orange'};
+
+function openVesselPanel(imo,name,type,flag,owner,loa,draught,gt,nt,beam,status,mmsi,cs,built,cls,dwt) {
+  document.getElementById('vp-name').textContent = name;
+  const sc = STATUS_MAP[status] || 'bg-grey';
+  document.getElementById('vp-badge').innerHTML = `<span class="badge ${sc}"><span class="dot"></span>${status.toUpperCase()}</span>`;
+  ['imo','type','flag','owner','mmsi','cs','built','class'].forEach((k,i) => {
+    const vals = [imo,type,flag,owner,mmsi,cs,built,cls];
+    document.getElementById('vp-'+k).textContent = vals[i];
+  });
+  document.getElementById('vp-loa').textContent = loa + ' m';
+  document.getElementById('vp-draught').textContent = draught + ' m';
+  document.getElementById('vp-gt').textContent = gt + ' GT';
+  document.getElementById('vp-nt').textContent = nt + ' NT';
+  document.getElementById('vp-beam').textContent = beam + ' m';
+  document.getElementById('vp-dwt').textContent = dwt + ' DWT';
+  const visits = VISITS[imo] || [];
+  const tbody = document.getElementById('vp-visits-body');
+  tbody.innerHTML = visits.length
+    ? visits.map(v => `<tr><td style="font-size:11px;padding:6px 7px;font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--b1)">${v.id}</td><td style="font-size:11px;padding:6px 7px;font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--b1)">${v.date}</td><td style="font-size:11px;padding:6px 7px;font-family:'JetBrains Mono',monospace;border-bottom:1px solid var(--b1)">${v.berth}</td><td style="padding:6px 7px;border-bottom:1px solid var(--b1)"><span class="badge ${v.s}" style="font-size:9px">—</span></td></tr>`).join('')
+    : `<tr><td colspan="4" style="text-align:center;color:var(--t2);padding:14px;font-size:12px">No visit history.</td></tr>`;
+  document.getElementById('vp-llr').style.display = ['9321483','9301112','9706313','9301443'].includes(imo) ? '' : 'none';
+  document.getElementById('vp-llr-date').textContent = '2026-03-01';
+  document.getElementById('deact-desc').textContent = `Deactivating ${name} will prevent it from being selected in visit creation. All historical data will be preserved.`;
+  const deactBtn = document.getElementById('vp-deact-btn');
+  if (status === 'Deactivated') { deactBtn.textContent = 'Reactivate Vessel'; deactBtn.className = 'btn-secondary'; deactBtn.style = 'width:100%;padding:9px;font-size:12px;border-color:var(--green);color:var(--green)'; }
+  else { deactBtn.textContent = 'Deactivate Vessel'; deactBtn.className = 'btn-warn'; deactBtn.style = 'width:100%;padding:9px;font-size:12px'; }
+  openPanel('vessel-panel');
+}
+
+function filterVessels(val) {
+  const s = (val || document.getElementById('vsd-search').value).toLowerCase();
+  const t = document.getElementById('vf-type').value.toLowerCase();
+  const f = document.getElementById('vf-flag').value.toLowerCase();
+  const st = document.getElementById('vf-status').value.toLowerCase();
+  const rows = document.querySelectorAll('#vessels-tbody tr'); let n = 0;
+  rows.forEach(r => {
+    const txt = r.textContent.toLowerCase();
+    const show = (!s||txt.includes(s))&&(!t||txt.includes(t))&&(!f||txt.includes(f))&&(!st||txt.includes(st));
+    r.style.display = show ? '' : 'none'; if(show) n++;
+  });
+  const cnt = document.getElementById('vsd-count');
+  if (s||t||f||st) { cnt.style.display=''; cnt.textContent=`Showing ${n} of 6 vessels`; }
+  else cnt.style.display = 'none';
+}
+</script>
+</body>
+</html>

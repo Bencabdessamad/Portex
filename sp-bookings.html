@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — My Bookings</title>
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">My Bookings</div>
+        <div class="pg-sub">ATLANTIC PILOT SERVICES — ASSIGNED SERVICE BOOKINGS — MPIS-VSM</div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary)"></div><div class="kpi-label">Total Bookings</div><div class="kpi-value">5</div><div class="kpi-sub">ASSIGNED TO MY ORG</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--blue)"></div><div class="kpi-label">Assigned</div><div class="kpi-value">2</div><div class="kpi-sub">AWAITING RESOURCES</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--teal)"></div><div class="kpi-label">In Progress</div><div class="kpi-value">1</div><div class="kpi-sub">CURRENTLY EXECUTING</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--green)"></div><div class="kpi-label">Completed (Week)</div><div class="kpi-value">12</div><div class="kpi-sub">THIS WEEK</div></div>
+      </div>
+
+      <div class="toolbar">
+        <input class="t-search" type="text" placeholder="Search by vessel, visit ref…" oninput="filterBookings(this.value)">
+        <select class="t-select" id="svc-filter" onchange="applyFilters()">
+          <option value="">All Services</option>
+          <option>Pilotage</option><option>Towage</option><option>Mooring</option>
+        </select>
+        <select class="t-select" id="status-filter" onchange="applyFilters()">
+          <option value="">All Statuses</option>
+          <option>Assigned</option><option>Resources Allocated</option><option>In Progress</option><option>Completed</option>
+        </select>
+        <input class="date-inp" type="date" value="2026-05-10">
+        <span class="results-count" id="bcount">5 bookings</span>
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Service</th><th>Visit Ref</th><th>Vessel</th><th>Planned Time</th>
+            <th>Berth</th><th>Status</th><th>Resources</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="book-tbody">
+            <tr class="clickable">
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td class="mono">VIS-2011</td>
+              <td style="font-weight:600">COSCO ANTWERP</td>
+              <td class="mono">10 May 08:00</td>
+              <td class="mono">Berth 2</td>
+              <td><span class="badge svc-assigned"><span class="dot" style="background:var(--blue)"></span>ASSIGNED</span></td>
+              <td><span class="badge bg-orange" style="font-size:9px">0/2 required</span></td>
+              <td><div class="act-row"><a class="act-btn primary-act" href="sp-booking-detail.html">Assign Resources</a></div></td>
+            </tr>
+            <tr class="clickable">
+              <td><span class="badge bg-teal" style="font-size:9px">PILO</span></td>
+              <td class="mono">VIS-2010</td>
+              <td style="font-weight:600">MAERSK TANGIER</td>
+              <td class="mono">08 May 06:00</td>
+              <td class="mono">Berth 1</td>
+              <td><span class="badge svc-progress"><span class="dot" style="background:var(--teal)"></span>IN PROGRESS</span></td>
+              <td><span class="badge bg-green" style="font-size:9px">2/2 ✓</span></td>
+              <td><div class="act-row"><a class="act-btn primary-act" href="sp-booking-detail.html">Record Completion</a></div></td>
+            </tr>
+            <tr class="clickable">
+              <td><span class="badge bg-purple" style="font-size:9px">PILO</span></td>
+              <td class="mono">VIS-2009</td>
+              <td style="font-weight:600">MSC GULSUN</td>
+              <td class="mono">11 May 14:00</td>
+              <td class="mono">Berth 4</td>
+              <td><span class="badge svc-resources"><span class="dot" style="background:var(--purple)"></span>RES. ALLOCATED</span></td>
+              <td><span class="badge bg-green" style="font-size:9px">2/2 ✓</span></td>
+              <td><div class="act-row"><a class="act-btn" href="sp-booking-detail.html">View</a></div></td>
+            </tr>
+            <tr class="clickable">
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td class="mono">VIS-2001</td>
+              <td style="font-weight:600">EVER GIVEN</td>
+              <td class="mono">13 May 10:00</td>
+              <td class="mono">Berth 3</td>
+              <td><span class="badge svc-assigned"><span class="dot" style="background:var(--blue)"></span>ASSIGNED</span></td>
+              <td><span class="badge bg-orange" style="font-size:9px">0/2 required</span></td>
+              <td><div class="act-row"><a class="act-btn primary-act" href="sp-booking-detail.html">Assign Resources</a></div></td>
+            </tr>
+            <tr class="clickable" style="opacity:.7">
+              <td><span class="badge bg-green" style="font-size:9px">PILO</span></td>
+              <td class="mono">VIS-1998</td>
+              <td style="font-weight:600">CMA CGM MARCO POLO</td>
+              <td class="mono">02 May 08:00</td>
+              <td class="mono">Berth 1</td>
+              <td><span class="badge svc-completed"><span class="dot" style="background:var(--green)"></span>COMPLETED</span></td>
+              <td><span class="badge bg-green" style="font-size:9px">2/2 ✓</span></td>
+              <td><div class="act-row"><button class="act-btn">View</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+</div>
+<script src="base.js"></script><script src="shell.js"></script>
+<script>
+initPage('sp','bookings','Omar Tazi','OT');
+function filterBookings(val){
+  const v=val.toLowerCase(); let n=0;
+  document.querySelectorAll('#book-tbody tr').forEach(r=>{
+    const show=!v||r.textContent.toLowerCase().includes(v);
+    r.style.display=show?'':'none'; if(show)n++;
+  });
+  document.getElementById('bcount').textContent=n+' booking'+(n!==1?'s':'');
+}
+function applyFilters(){
+  const s=document.getElementById('svc-filter').value.toLowerCase();
+  const st=document.getElementById('status-filter').value.toLowerCase();
+  let n=0;
+  document.querySelectorAll('#book-tbody tr').forEach(r=>{
+    const txt=r.textContent.toLowerCase();
+    const show=(!s||txt.includes(s))&&(!st||txt.includes(st));
+    r.style.display=show?'':'none'; if(show)n++;
+  });
+  document.getElementById('bcount').textContent=n+' booking'+(n!==1?'s':'');
+}
+</script>
+</body></html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Service Providers</title>
+<link rel="stylesheet" href="base.css">
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <div class="pg-header">
+        <div class="pg-title">Service Providers</div>
+        <div class="pg-sub">AUTHORIZED PORT SERVICE ORGANIZATIONS — MPIS-VSM</div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--primary)"></div><div class="kpi-label">Total Providers</div><div class="kpi-value">6</div><div class="kpi-sub">REGISTERED ORGS</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--green)"></div><div class="kpi-label">Active</div><div class="kpi-value">5</div><div class="kpi-sub">CURRENTLY ACTIVE</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--orange)"></div><div class="kpi-label">Services Covered</div><div class="kpi-value">3</div><div class="kpi-sub">PILO · TOWG · MOOR</div></div>
+        <div class="kpi-card"><div class="kpi-accent" style="background:var(--red)"></div><div class="kpi-label">Suspended</div><div class="kpi-value">1</div><div class="kpi-sub">ACCESS REVOKED</div></div>
+      </div>
+
+      <div class="toolbar">
+        <input class="t-search" type="text" placeholder="Search by name, service or contact…" oninput="filterProviders(this.value)">
+        <select class="t-select" id="scope-filter" onchange="applyFilters()">
+          <option value="">All Services</option>
+          <option>Pilotage</option><option>Towage</option><option>Mooring</option>
+        </select>
+        <select class="t-select" id="status-filter" onchange="applyFilters()">
+          <option value="">All Statuses</option>
+          <option>Active</option><option>Suspended</option>
+        </select>
+        <button class="add-btn" onclick="openModal('modal-add-provider')">+ Add Provider</button>
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>Provider Name</th><th>Service Scope</th>
+            <th>Contact Name</th><th>Contact Email</th><th>Phone</th>
+            <th>Status</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="providers-tbody">
+            <tr class="clickable">
+              <td style="font-weight:600">Atlantic Pilot Services</td>
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td>Ahmed Karimi</td>
+              <td class="dim">ops@atlanticpilot.ma</td>
+              <td class="mono">+212 522 001 100</td>
+              <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+              <td><div class="act-row">
+                <button class="act-btn edit" onclick="openModal('modal-edit-provider')">Edit</button>
+                <button class="act-btn warn" onclick="openModal('modal-suspend-provider')">Suspend</button>
+              </div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">Casablanca Tug Co.</td>
+              <td><span class="badge bg-teal" style="font-size:9px">TOWG</span></td>
+              <td>Hassan Benali</td>
+              <td class="dim">h.benali@catug.ma</td>
+              <td class="mono">+212 522 002 200</td>
+              <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+              <td><div class="act-row">
+                <button class="act-btn edit" onclick="openModal('modal-edit-provider')">Edit</button>
+                <button class="act-btn warn" onclick="openModal('modal-suspend-provider')">Suspend</button>
+              </div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">Port Mooring Services SARL</td>
+              <td><span class="badge bg-orange" style="font-size:9px">MOOR</span></td>
+              <td>Youssef Chraibi</td>
+              <td class="dim">y.chraibi@pms.ma</td>
+              <td class="mono">+212 522 003 300</td>
+              <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+              <td><div class="act-row">
+                <button class="act-btn edit" onclick="openModal('modal-edit-provider')">Edit</button>
+                <button class="act-btn warn" onclick="openModal('modal-suspend-provider')">Suspend</button>
+              </div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">North Africa Pilotage Ltd</td>
+              <td><span class="badge bg-blue" style="font-size:9px">PILO</span></td>
+              <td>Karima Idrissi</td>
+              <td class="dim">k.idrissi@napilot.ma</td>
+              <td class="mono">+212 522 004 400</td>
+              <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+              <td><div class="act-row">
+                <button class="act-btn edit" onclick="openModal('modal-edit-provider')">Edit</button>
+                <button class="act-btn warn" onclick="openModal('modal-suspend-provider')">Suspend</button>
+              </div></td>
+            </tr>
+            <tr class="clickable">
+              <td style="font-weight:600">MedTug Operations</td>
+              <td><span class="badge bg-teal" style="font-size:9px">TOWG</span></td>
+              <td>Samir El Fassi</td>
+              <td class="dim">s.elfassi@medtug.ma</td>
+              <td class="mono">+212 522 005 500</td>
+              <td><span class="badge bg-green"><span class="dot"></span>ACTIVE</span></td>
+              <td><div class="act-row">
+                <button class="act-btn edit" onclick="openModal('modal-edit-provider')">Edit</button>
+                <button class="act-btn warn" onclick="openModal('modal-suspend-provider')">Suspend</button>
+              </div></td>
+            </tr>
+            <tr class="clickable" style="opacity:.65">
+              <td style="font-weight:600">OldMoor Services</td>
+              <td><span class="badge bg-orange" style="font-size:9px">MOOR</span></td>
+              <td>Omar Lahlou</td>
+              <td class="dim">o.lahlou@oldmoor.ma</td>
+              <td class="mono">+212 522 006 600</td>
+              <td><span class="badge bg-red"><span class="dot"></span>SUSPENDED</span></td>
+              <td><div class="act-row">
+                <button class="act-btn ok">Reactivate</button>
+              </div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODAL: ADD PROVIDER -->
+<div class="modal-overlay" id="modal-add-provider" onclick="closeModalOutside(event,'modal-add-provider')">
+  <div class="modal-panel">
+    <div class="modal-hdr"><div class="modal-title">Add Service Provider</div><button class="modal-close" onclick="closeModal('modal-add-provider')">×</button></div>
+    <div class="form-grid">
+      <div class="fg full"><label class="fl">Provider Name *</label><input class="fi" placeholder="Atlantic Pilot Services SARL"></div>
+      <div class="fg full">
+        <label class="fl">Service Scope *</label>
+        <div class="perm-grid" style="margin-top:4px">
+          <label class="perm-item"><input type="checkbox" style="accent-color:var(--primary)"> Pilotage (PILO)</label>
+          <label class="perm-item"><input type="checkbox" style="accent-color:var(--primary)"> Towage (TOWG)</label>
+          <label class="perm-item"><input type="checkbox" style="accent-color:var(--primary)"> Mooring (MOOR)</label>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Contact Name *</label><input class="fi" placeholder="Full name"></div>
+      <div class="fg"><label class="fl">Phone *</label><input class="fi" placeholder="+212 5XX XXX XXX"></div>
+      <div class="fg full"><label class="fl">Contact Email *</label><input class="fi" type="email" placeholder="ops@provider.ma"></div>
+      <div class="fg"><label class="fl">Status</label><select class="fi"><option>Active</option><option>Suspended</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-add-provider')">Cancel</button>
+      <button class="btn-primary" onclick="closeModal('modal-add-provider')">Add Provider</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT PROVIDER -->
+<div class="modal-overlay" id="modal-edit-provider" onclick="closeModalOutside(event,'modal-edit-provider')">
+  <div class="modal-panel">
+    <div class="modal-hdr"><div class="modal-title">Edit Provider</div><button class="modal-close" onclick="closeModal('modal-edit-provider')">×</button></div>
+    <div class="form-grid">
+      <div class="fg full"><label class="fl">Provider Name *</label><input class="fi ok" value="Atlantic Pilot Services"></div>
+      <div class="fg full">
+        <label class="fl">Service Scope *</label>
+        <div class="perm-grid" style="margin-top:4px">
+          <label class="perm-item"><input type="checkbox" checked style="accent-color:var(--primary)"> Pilotage (PILO)</label>
+          <label class="perm-item"><input type="checkbox" style="accent-color:var(--primary)"> Towage (TOWG)</label>
+          <label class="perm-item"><input type="checkbox" style="accent-color:var(--primary)"> Mooring (MOOR)</label>
+        </div>
+      </div>
+      <div class="fg"><label class="fl">Contact Name *</label><input class="fi ok" value="Ahmed Karimi"></div>
+      <div class="fg"><label class="fl">Phone *</label><input class="fi ok" value="+212 522 001 100"></div>
+      <div class="fg full"><label class="fl">Contact Email *</label><input class="fi ok" value="ops@atlanticpilot.ma"></div>
+      <div class="fg"><label class="fl">Status</label><select class="fi"><option selected>Active</option><option>Suspended</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-edit-provider')">Cancel</button>
+      <button class="btn-primary" onclick="closeModal('modal-edit-provider')">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SUSPEND -->
+<div class="modal-overlay" id="modal-suspend-provider" onclick="closeModalOutside(event,'modal-suspend-provider')">
+  <div class="modal-panel sm">
+    <div style="display:flex;align-items:flex-start;gap:14px">
+      <div class="confirm-icon ci-orange">⊘</div>
+      <div>
+        <div class="confirm-ttl">Suspend Provider?</div>
+        <div class="confirm-desc">Atlantic Pilot Services will be unable to receive new service assignments. Active bookings will be flagged for the Harbour Master.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modal-suspend-provider')">Cancel</button>
+      <button class="btn-warn" onclick="closeModal('modal-suspend-provider')">Suspend Provider</button>
+    </div>
+  </div>
+</div>
+
+<script src="base.js"></script><script src="shell.js"></script>
+<script>
+initPage('admin','providers','System Admin','SA');
+function filterProviders(val){
+  const v=val.toLowerCase();
+  document.querySelectorAll('#providers-tbody tr').forEach(r=>{
+    r.style.display=(!v||r.textContent.toLowerCase().includes(v))?'':'none';
+  });
+}
+function applyFilters(){
+  const scope=document.getElementById('scope-filter').value.toLowerCase();
+  const status=document.getElementById('status-filter').value.toLowerCase();
+  document.querySelectorAll('#providers-tbody tr').forEach(r=>{
+    const txt=r.textContent.toLowerCase();
+    r.style.display=(!scope||txt.includes(scope))&&(!status||txt.includes(status))?'':'none';
+  });
+}
+</script>
+</body></html>

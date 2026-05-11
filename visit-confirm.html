@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MPIS — Visit Detail</title>
+<link rel="stylesheet" href="base.css">
+<style>
+.section-block { background: var(--s3); border: 1px solid var(--b1); border-radius: 3px; margin-bottom: 16px; }
+.section-block-hdr { padding: 13px 16px; border-bottom: 1px solid var(--b1); display: flex; align-items: center; justify-content: space-between; }
+.section-block-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; color: var(--t1); }
+.section-block-body { padding: 16px; }
+.data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.dg-cell { padding: 9px 0; border-bottom: 1px solid var(--b1); display: flex; justify-content: space-between; align-items: center; }
+.dg-cell:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--b1); }
+.dg-cell:last-child, .dg-cell:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+.dg-key { font-size: 11px; color: var(--t2); }
+.dg-val { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--t1); }
+.svc-req-item { background: var(--s4); border: 1px solid var(--b1); border-radius: 3px; padding: 12px 14px; margin-bottom: 8px; }
+.svc-req-item:last-child { margin-bottom: 0; }
+.sri-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.sri-code { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 2px; background: rgba(59,130,246,.1); color: var(--blue); }
+.sri-name { font-size: 13px; font-weight: 600; color: var(--t1); flex: 1; }
+.sri-mandatory { font-size: 10px; color: var(--t2); font-family: 'JetBrains Mono', monospace; }
+.qty-input { background: var(--s2); border: 1px solid var(--b2); border-radius: 3px; padding: 4px 8px; color: var(--t1); font-family: 'JetBrains Mono', monospace; font-size: 12px; outline: none; width: 60px; text-align: center; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar"></div>
+  <div id="body">
+    <nav id="sidebar"></nav>
+    <main id="main">
+
+      <!-- Page Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+            <span class="badge vs-approved" id="state-badge">APPROVED</span>
+            <span class="mono" style="color:var(--primary)">VIS-2010</span>
+          </div>
+          <div class="pg-title">EMMA MAERSK</div>
+          <div class="pg-sub">IMO 9321483 · MAROC AGENTS SARL — VISIT APPROVED — REQUEST SERVICES NOW</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <a href="dashboard-agent.html" class="btn-secondary">← Dashboard</a>
+          <button class="btn-primary" onclick="showServiceRequest()" id="svc-btn">+ Request Services</button>
+        </div>
+      </div>
+
+      <!-- Approval notification -->
+      <div class="info-banner" style="margin-bottom:20px">
+        <div class="info-dot"></div>
+        <span>Visit approved by Harbour Master Rachid El Amrani on 09 May 2026 at 14:32 UTC. You may now request port services.</span>
+      </div>
+
+      <!-- Visit Data Section -->
+      <div class="section-block">
+        <div class="section-block-hdr">
+          <div class="section-block-title">Reservation Data</div>
+          <span class="badge bg-green"><span class="dot"></span>CONFIRMED</span>
+        </div>
+        <div class="section-block-body">
+          <div class="data-grid">
+            <div class="dg-cell"><span class="dg-key">Port of Call</span><span class="dg-val">MACAS</span></div>
+            <div class="dg-cell"><span class="dg-key">Purpose</span><span class="dg-val">Repair</span></div>
+            <div class="dg-cell"><span class="dg-key">ETA</span><span class="dg-val">10 May 2026 08:00</span></div>
+            <div class="dg-cell"><span class="dg-key">ETD</span><span class="dg-val">12 May 2026 18:00</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirmation Data -->
+      <div class="section-block">
+        <div class="section-block-hdr">
+          <div class="section-block-title">Operational Data</div>
+          <span class="badge bg-green"><span class="dot"></span>SUBMITTED</span>
+        </div>
+        <div class="section-block-body">
+          <div class="data-grid">
+            <div class="dg-cell"><span class="dg-key">Previous Port</span><span class="dg-val">BEANR</span></div>
+            <div class="dg-cell"><span class="dg-key">Next Port</span><span class="dg-val">ESALG</span></div>
+            <div class="dg-cell"><span class="dg-key">Arr. Draught Fwd</span><span class="dg-val">13.4 m</span></div>
+            <div class="dg-cell"><span class="dg-key">Arr. Draught Aft</span><span class="dg-val">13.8 m</span></div>
+            <div class="dg-cell"><span class="dg-key">Dep. Draught Fwd</span><span class="dg-val">12.8 m</span></div>
+            <div class="dg-cell"><span class="dg-key">Dep. Draught Aft</span><span class="dg-val">13.0 m</span></div>
+            <div class="dg-cell"><span class="dg-key">Crew on Arrival</span><span class="dg-val">24</span></div>
+            <div class="dg-cell"><span class="dg-key">ISPS Level</span><span class="dg-val">Level 1</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Documents -->
+      <div class="section-block">
+        <div class="section-block-hdr">
+          <div class="section-block-title">Documents</div>
+          <span style="font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace">2 accepted · 1 rejected</span>
+        </div>
+        <div class="section-block-body">
+          <div class="doc-row">
+            <div class="doc-icon">📄</div>
+            <div><div class="doc-name">Crew_List_EMMA_MAERSK.pdf</div><div class="doc-meta">CREW_LIST · 245 KB</div></div>
+            <div style="margin-left:auto"><span class="badge bg-green" style="font-size:9px"><span class="dot"></span>ACCEPTED</span></div>
+          </div>
+          <div class="doc-row">
+            <div class="doc-icon">📄</div>
+            <div><div class="doc-name">Cargo_Declaration.pdf</div><div class="doc-meta">CARGO_DECL · 512 KB</div></div>
+            <div style="margin-left:auto"><span class="badge bg-green" style="font-size:9px"><span class="dot"></span>ACCEPTED</span></div>
+          </div>
+          <div class="doc-row">
+            <div class="doc-icon">📄</div>
+            <div>
+              <div class="doc-name">ISPS_Security_Declaration.pdf</div>
+              <div class="doc-meta">ISPS_DECL · 89 KB</div>
+              <div style="margin-top:4px"><span class="badge bg-red" style="font-size:9px"><span class="dot"></span>REJECTED — Missing ISPS Security Level declaration</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Request Panel (shown after clicking Request Services) -->
+      <div class="section-block" id="service-request-panel" style="display:none">
+        <div class="section-block-hdr">
+          <div class="section-block-title">Request Port Services</div>
+          <span class="badge bg-orange"><span class="dot"></span>POST-APPROVAL</span>
+        </div>
+        <div class="section-block-body">
+          <div class="info-banner" style="margin-bottom:14px">
+            <div class="info-dot"></div>
+            <span>Mandatory services are pre-selected and cannot be removed. The Harbour Master will assign these to providers.</span>
+          </div>
+
+          <!-- Mandatory services -->
+          <div style="font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.1em;font-family:'JetBrains Mono',monospace;margin-bottom:10px">Mandatory Services (automatically included)</div>
+
+          <div class="svc-req-item">
+            <div class="sri-top">
+              <input type="checkbox" checked disabled style="accent-color:var(--primary)">
+              <span class="sri-code">PILO</span>
+              <span class="sri-name">Pilotage</span>
+              <span class="sri-mandatory">MANDATORY</span>
+            </div>
+            <div style="font-size:11px;color:var(--t2)">Required for all vessel arrivals and departures — 1 Licensed Pilot + 1 Pilot Boat</div>
+          </div>
+
+          <div class="svc-req-item">
+            <div class="sri-top">
+              <input type="checkbox" checked disabled style="accent-color:var(--primary)">
+              <span class="sri-code">TOWG</span>
+              <span class="sri-name">Tug Assistance</span>
+              <span class="sri-mandatory">MANDATORY</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+              <div style="font-size:11px;color:var(--t2)">Based on 171,542 GT — system recommends 3 tugs</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:11px;color:var(--t2)">Qty:</span>
+                <input class="qty-input" type="number" value="3" min="1" max="8">
+              </div>
+            </div>
+          </div>
+
+          <div class="svc-req-item">
+            <div class="sri-top">
+              <input type="checkbox" checked disabled style="accent-color:var(--primary)">
+              <span class="sri-code">MOOR</span>
+              <span class="sri-name">Mooring Service</span>
+              <span class="sri-mandatory">MANDATORY</span>
+            </div>
+            <div style="font-size:11px;color:var(--t2)">Shore-based mooring personnel and vehicles — per berth configuration</div>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid var(--b1)">
+            <button class="btn-secondary" onclick="hideServiceRequest()">Cancel</button>
+            <button class="btn-primary" onclick="submitServices()">Submit Service Requests →</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+<script src="base.js"></script>
+<script src="shell.js"></script>
+<script>
+initPage('agent','visits','Fatima Zahra Benali','FZ');
+
+function showServiceRequest() {
+  document.getElementById('service-request-panel').style.display = 'block';
+  document.getElementById('service-request-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('svc-btn').style.display = 'none';
+}
+function hideServiceRequest() {
+  document.getElementById('service-request-panel').style.display = 'none';
+  document.getElementById('svc-btn').style.display = '';
+}
+function submitServices() {
+  document.getElementById('state-badge').className = 'badge vs-svc-req';
+  document.getElementById('state-badge').textContent = 'SERVICES REQUESTED';
+  document.getElementById('service-request-panel').style.display = 'none';
+  document.getElementById('svc-btn').style.display = 'none';
+  document.querySelector('.pg-sub').textContent = 'IMO 9321483 · MAROC AGENTS SARL — SERVICES REQUESTED — AWAITING HM ASSIGNMENT';
+  // show confirmation
+  const banner = document.createElement('div');
+  banner.className = 'info-banner';
+  banner.style.marginBottom = '20px';
+  banner.innerHTML = '<div class="info-dot"></div><span>✓ Service requests submitted. The Harbour Master will assign PILO, TOWG, and MOOR to service providers. You will be notified when assignments are confirmed.</span>';
+  document.querySelector('.section-block').before(banner);
+}
+</script>
+</body>
+</html>
